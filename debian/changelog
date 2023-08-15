@@ -1,0 +1,27 @@
+ros-humble-clearpath-robot (0.0.3-1jammy) jammy; urgency=high
+
+  * Linter
+  * Move author in all package.xml to pass xml linter.
+  * Contributors: Roni Kreinin, Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 15 Aug 2023 04:00:00 -0000
+
+ros-humble-clearpath-robot (0.0.2-1jammy) jammy; urgency=high
+
+  * Config update
+  * Contributors: Roni Kreinin
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 25 Jul 2023 04:00:00 -0000
+
+ros-humble-clearpath-robot (0.0.1-1jammy) jammy; urgency=high
+
+  * [clearpath_platform] Added J100 MCU, FTDI and Logitech joy udev rules.
+  * Moved clearpath_platform to clearpath_common
+    Added clearpath_generator_robot
+    Created clearpath_robot metapackage
+    Moved scripts and services into clearpath_robot
+  * Contributors: Roni Kreinin, Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 20 Jul 2023 04:00:00 -0000
+
+
