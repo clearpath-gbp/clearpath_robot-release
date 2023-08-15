@@ -31,15 +31,9 @@
 # of Clearpath Robotics.
 
 from clearpath_config.sensors.types.sensor import BaseSensor
-from clearpath_config.sensors.types.lidars_2d import HokuyoUST10, SickLMS1XX
-from clearpath_config.sensors.types.lidars_3d import VelodyneLidar
-from clearpath_config.sensors.types.cameras import IntelRealsense
-from clearpath_config.sensors.types.imu import Microstrain
-from clearpath_config.sensors.types.gps import SwiftNavDuro
 
 from clearpath_generator_common.common import ParamFile, Package
 from clearpath_generator_common.param.writer import ParamWriter
-from clearpath_generator_common.param.platform import PlatformParam
 
 
 class SensorParam():
@@ -83,17 +77,8 @@ class SensorParam():
             sensor_writer.write_file()
             print('Generated config: {0}'.format(self.param_file.full_path))
 
-    MODEL = {
-        HokuyoUST10.SENSOR_MODEL: BaseParam,
-        SickLMS1XX.SENSOR_MODEL: BaseParam,
-        IntelRealsense.SENSOR_MODEL: BaseParam,
-        Microstrain.SENSOR_MODEL: BaseParam,
-        VelodyneLidar.SENSOR_MODEL: BaseParam,
-        SwiftNavDuro.SENSOR_MODEL: BaseParam
-    }
-
     def __new__(cls,
                 sensor: BaseSensor,
                 namespace: str,
                 param_path: str) -> BaseParam:
-        return SensorParam.MODEL[sensor.SENSOR_MODEL](sensor, namespace, param_path)
+        return SensorParam.BaseParam(sensor, namespace, param_path)
