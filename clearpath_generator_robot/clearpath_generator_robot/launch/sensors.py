@@ -31,11 +31,6 @@
 # of Clearpath Robotics.
 
 from clearpath_config.sensors.types.sensor import BaseSensor
-from clearpath_config.sensors.types.lidars_2d import HokuyoUST10, SickLMS1XX
-from clearpath_config.sensors.types.lidars_3d import VelodyneLidar
-from clearpath_config.sensors.types.cameras import IntelRealsense
-from clearpath_config.sensors.types.imu import Microstrain
-from clearpath_config.sensors.types.gps import SwiftNavDuro
 
 from clearpath_generator_common.common import LaunchFile, Package, ParamFile
 from clearpath_generator_common.launch.writer import LaunchWriter
@@ -44,7 +39,7 @@ from clearpath_generator_common.launch.writer import LaunchWriter
 class SensorLaunch():
     class BaseLaunch():
         CLEARPATH_SENSORS = 'clearpath_sensors'
-        TOPIC_NAMESPACE = 'sensors/'
+        SENSOR_NAMESPACE = 'sensors'
         CLEARPATH_SENSORS_PACKAGE = Package(CLEARPATH_SENSORS)
 
         # Launch arguments
@@ -87,9 +82,9 @@ class SensorLaunch():
         def namespace(self) -> str:
             """Return sensor namespace"""
             if self._robot_namespace in ('', '/'):
-                return f'{self.TOPIC_NAMESPACE}{self.sensor.name}'
+                return f'{self.SENSOR_NAMESPACE}/{self.sensor.name}'
             else:
-                return f'{self._robot_namespace}/{self.TOPIC_NAMESPACE}{self.sensor.name}'
+                return f'{self._robot_namespace}/{self.SENSOR_NAMESPACE}/{self.sensor.name}'
 
         @property
         def name(self) -> str:
@@ -101,21 +96,12 @@ class SensorLaunch():
             """Return sensor model"""
             return self.sensor.SENSOR_MODEL
 
-    MODEL = {
-        HokuyoUST10.SENSOR_MODEL: BaseLaunch,
-        SickLMS1XX.SENSOR_MODEL: BaseLaunch,
-        IntelRealsense.SENSOR_MODEL: BaseLaunch,
-        Microstrain.SENSOR_MODEL: BaseLaunch,
-        VelodyneLidar.SENSOR_MODEL: BaseLaunch,
-        SwiftNavDuro.SENSOR_MODEL: BaseLaunch
-    }
-
     def __new__(cls,
                 sensor: BaseSensor,
                 robot_namespace: str,
                 launch_path: str,
                 param_path: str) -> BaseLaunch:
-        return SensorLaunch.MODEL[sensor.SENSOR_MODEL](
+        return SensorLaunch.BaseLaunch(
             sensor,
             robot_namespace,
             launch_path,
