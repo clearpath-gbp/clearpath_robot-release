@@ -1,0 +1,45 @@
+ros-humble-clearpath-generator-robot (0.1.0-1jammy) jammy; urgency=high
+
+
+
+ -- rkreinin <rkreinin@clearpathrobotics.com>  Thu, 31 Aug 2023 04:00:00 -0000
+
+ros-humble-clearpath-generator-robot (0.0.3-1jammy) jammy; urgency=high
+
+  * Removed micros-ros-agent as dep.
+  * Renamed UST10 to UST
+    Cleaned up generators
+  * Move author in all package.xml to pass xml linter.
+  * [clearpath_generator_robot] Added author to package.xml.
+  * Added UM6/7
+  * Added Garmin 18x, Smart6 and Smart7
+  * Contributors: Roni Kreinin, Tony Baltovski
+
+ -- rkreinin <rkreinin@clearpathrobotics.com>  Tue, 15 Aug 2023 04:00:00 -0000
+
+ros-humble-clearpath-generator-robot (0.0.2-1jammy) jammy; urgency=high
+
+  * Sensor namespace
+  * Param generator
+  * Launch generator cleanup
+  * NMEA navsat driver
+  * Import paths
+  * Contributors: Roni Kreinin
+
+ -- rkreinin <rkreinin@clearpathrobotics.com>  Tue, 25 Jul 2023 04:00:00 -0000
+
+ros-humble-clearpath-generator-robot (0.0.1-1jammy) jammy; urgency=high
+
+  * Set use_sim_time to false
+  * Updated namespace and domain id service call
+  * Updates for how launch files are written
+  * Namespacing support
+  * Moved clearpath_platform to clearpath_common
+    Added clearpath_generator_robot
+    Created clearpath_robot metapackage
+    Moved scripts and services into clearpath_robot
+  * Contributors: Roni Kreinin
+
+ -- rkreinin <rkreinin@clearpathrobotics.com>  Thu, 20 Jul 2023 04:00:00 -0000
+
+
