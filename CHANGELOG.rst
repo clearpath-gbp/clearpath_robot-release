@@ -2,6 +2,9 @@
 Changelog for package clearpath_generator_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.0 (2023-08-31)
+------------------
+
 0.0.3 (2023-08-15)
 ------------------
 * Removed micros-ros-agent as dep.
