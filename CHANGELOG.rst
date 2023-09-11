@@ -2,6 +2,11 @@
 Changelog for package clearpath_generator_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.1 (2023-09-11)
+------------------
+* [clearpath_generator_robot] Re-added micro-ros-agent as exec depend.
+* Contributors: Tony Baltovski
+
 0.1.0 (2023-08-31)
 ------------------
 
