@@ -2,6 +2,9 @@
 Changelog for package clearpath_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.1 (2023-09-11)
+------------------
+
 0.1.0 (2023-08-31)
 ------------------
 * Create dummy launch files if they do not exist
