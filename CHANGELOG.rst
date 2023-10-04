@@ -2,6 +2,11 @@
 Changelog for package clearpath_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.3 (2023-10-04)
+------------------
+* Run platform and sensor services as user
+* Contributors: Roni Kreinin
+
 0.1.2 (2023-09-27)
 ------------------
 
