@@ -2,6 +2,15 @@
 Changelog for package clearpath_generator_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.2.5 (2024-03-07)
+------------------
+* Add valence dependency
+* Launch Valence BMS when relevant
+* Rename node based on input
+* Added rectify and resize
+* Float hz parameter
+* Contributors: Hilary Luo, Luis Camero, Roni Kreinin
+
 0.2.4 (2024-01-19)
 ------------------
 
