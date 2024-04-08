@@ -2,6 +2,9 @@
 Changelog for package clearpath_sensors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.2.6 (2024-04-08)
+------------------
+
 0.2.5 (2024-03-07)
 ------------------
 * Added image_transport_plugins to package.xml
