@@ -2,6 +2,9 @@
 Changelog for package clearpath_sensors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.2.10 (2024-05-16)
+-------------------
+
 0.2.9 (2024-05-16)
 ------------------
 * Fix tf_static for realsense and microstrain
