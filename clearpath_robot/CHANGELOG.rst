@@ -2,6 +2,11 @@
 Changelog for package clearpath_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.2.10 (2024-05-16)
+-------------------
+* Block microstrain in J100 MCU udev rule
+* Contributors: Hilary Luo
+
 0.2.9 (2024-05-16)
 ------------------
 
