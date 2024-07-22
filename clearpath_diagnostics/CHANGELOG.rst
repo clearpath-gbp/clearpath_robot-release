@@ -2,6 +2,11 @@
 Changelog for package clearpath_diagnostics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.2.12 (2024-07-22)
+-------------------
+* Use PathJoinSubstitution for setup_path
+* Contributors: Luis Camero
+
 0.2.11 (2024-05-28)
 -------------------
 
