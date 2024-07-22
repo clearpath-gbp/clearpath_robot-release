@@ -2,6 +2,14 @@
 Changelog for package clearpath_sensors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.2.12 (2024-07-22)
+-------------------
+* Remove test file
+* Updated Microstrain parameters
+* Generate remappings
+* Updated Realsense parameters
+* Contributors: Luis Camero
+
 0.2.11 (2024-05-28)
 -------------------
 * Added Zed launch and configuration files
