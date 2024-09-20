@@ -2,6 +2,11 @@
 Changelog for package clearpath_diagnostics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.0 (2024-09-19)
+------------------
+* R100 Initial Battry
+* Contributors: Luis Camero, luis-camero
+
 0.2.15 (2024-08-12)
 -------------------
 
