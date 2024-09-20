@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>clearpath_robot</name>
-  <version>0.2.15</version>
+  <version>0.3.0</version>
   <description>Clearpath Robot Metapackage</description>
   <maintainer email="lcamero@clearpathrobotics.com">Luis Camero</maintainer>
   <maintainer email="rkreinin@clearpathrobotics.com">Roni Kreinin</maintainer>
@@ -15,6 +15,8 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <exec_depend>can-utils</exec_depend>
+  <exec_depend>socat</exec_depend>
+
   <!-- Metapackage dependencies-->
   <exec_depend>clearpath_generator_robot</exec_depend>
   <exec_depend>clearpath_sensors</exec_depend>
@@ -23,6 +25,10 @@
   <exec_depend>clearpath_config</exec_depend>
   <exec_depend>clearpath_generator_common</exec_depend>
   <exec_depend>robot_upstart</exec_depend>
+
+  <!-- Manipulator dependencies -->
+  <exec_depend>kortex_driver</exec_depend>
+  <exec_depend>robotiq_controllers</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
