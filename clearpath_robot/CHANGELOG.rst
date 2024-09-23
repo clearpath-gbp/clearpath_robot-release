@@ -2,6 +2,9 @@
 Changelog for package clearpath_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.1 (2024-09-23)
+------------------
+
 0.3.0 (2024-09-19)
 ------------------
 * Enable vcan service when installed
