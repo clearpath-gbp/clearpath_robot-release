@@ -1,3 +1,32 @@
+## clearpath_robot (humble) - 1.0.0-2
+
+The packages in the `clearpath_robot` repository were released into the `humble` distro by running `/usr/bin/bloom-release clearpath_robot -r humble -t humble` on `Tue, 26 Nov 2024 15:01:44 -0000`
+
+These packages were released:
+- `clearpath_diagnostics`
+- `clearpath_generator_robot`
+- `clearpath_hardware_interfaces`
+- `clearpath_robot`
+- `clearpath_sensors`
+- `puma_motor_driver`
+
+Version of package(s) in repository `clearpath_robot`:
+
+- upstream repository: https://github.com/clearpathrobotics/clearpath_robot.git
+- release repository: https://github.com/clearpath-gbp/clearpath_robot-release.git
+- rosdistro version: `0.3.2-1`
+- old version: `1.0.0-1`
+- new version: `1.0.0-2`
+
+Versions of tools used:
+
+- bloom version: `0.12.0`
+- catkin_pkg version: `1.0.0`
+- rosdep version: `0.25.1`
+- rosdistro version: `1.0.1`
+- vcstools version: `0.1.42`
+
+
 ## clearpath_robot (humble) - 1.0.0-1
 
 The packages in the `clearpath_robot` repository were released into the `humble` distro by running `/usr/bin/bloom-release clearpath_robot -r humble -t humble` on `Tue, 26 Nov 2024 05:51:11 -0000`
