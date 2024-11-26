@@ -1,6 +1,6 @@
 # Software License Agreement (BSD)
 #
-# @author    Luis Camero <lcamero@clearpathrobotics.com>
+# @author    Hilary Luo <hluo@clearpathrobotics.com>
 # @copyright (c) 2024, Clearpath Robotics, Inc., All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -25,57 +25,48 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
+
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-
-from launch_ros.actions import ComposableNodeContainer
-from launch_ros.descriptions import ComposableNode
-from launch_ros.substitutions import FindPackageShare
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    parameters = LaunchConfiguration('parameters')
     namespace = LaunchConfiguration('namespace')
+    in_ffmpeg = LaunchConfiguration('in_ffmpeg')
+    out_raw = LaunchConfiguration('out_raw')
 
     arg_namespace = DeclareLaunchArgument(
         'namespace',
-        default_value='')
-
-    arg_parameters = DeclareLaunchArgument(
-        'parameters',
-        default_value=PathJoinSubstitution([
-          FindPackageShare('clearpath_sensors'),
-          'config',
-          'phidgets_spatial.yaml'
-        ]))
-
-    phidgets_node = ComposableNode(
-      package='phidgets_spatial',
-      plugin='phidgets::SpatialRosI',
-      name='phidgets_spatial',
-      namespace=namespace,
-      parameters=[parameters],
-      remappings=[
-          ('imu/data_raw', 'data_raw'),
-          ('imu/mag', 'mag'),
-          ('imu/is_calibrated', 'is_calibrated')
-      ]
+        default_value=''
     )
 
-    imu_processing_container = ComposableNodeContainer(
-        name='imu_processing_container',
+    arg_in_ffmpeg = DeclareLaunchArgument(
+        'in_ffmpeg',
+        default_value='ffmpeg'
+    )
+
+    arg_out_raw = DeclareLaunchArgument(
+        'out_raw',
+        default_value='image'
+    )
+
+    ffmpeg_transport_node = Node(
+        name='image_ffmpeg_to_raw',
         namespace=namespace,
-        package='rclcpp_components',
-        executable='component_container',
-        composable_node_descriptions=[
-            phidgets_node,
+        package='image_transport',
+        executable='republish',
+        remappings=[
+            ('in/ffmpeg', in_ffmpeg),
+            ('out', out_raw),
         ],
-        output='screen',
+        arguments=['ffmpeg', 'raw'],
     )
 
     ld = LaunchDescription()
     ld.add_action(arg_namespace)
-    ld.add_action(arg_parameters)
-    ld.add_action(imu_processing_container)
+    ld.add_action(arg_in_ffmpeg)
+    ld.add_action(arg_out_raw)
+    ld.add_action(ffmpeg_transport_node)
     return ld

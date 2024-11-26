@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+#
 # Software License Agreement (BSD)
 #
-# @author    Roni Kreinin <rkreinin@clearpathrobotics.com>
-# @copyright (c) 2023, Clearpath Robotics, Inc., All rights reserved.
+# @author    Chris Iverach-Brereton <civerachb@clearpathrobotics.com>
+# @copyright (c) 2024, Clearpath Robotics, Inc., All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -34,9 +36,8 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-
-    namespace = LaunchConfiguration('namespace')
     parameters = LaunchConfiguration('parameters')
+    namespace = LaunchConfiguration('namespace')
     robot_namespace = LaunchConfiguration('robot_namespace')
 
     arg_namespace = DeclareLaunchArgument(
@@ -52,50 +53,26 @@ def generate_launch_description():
         default_value=PathJoinSubstitution([
           FindPackageShare('clearpath_sensors'),
           'config',
-          'velodyne_lidar.yaml'
+          'axis_camera.yaml'
         ]))
 
-    velodyne_driver_node = Node(
-        package='velodyne_driver',
-        executable='velodyne_driver_node',
+    axis_node = Node(
+        package='axis_camera',
+        executable='axis_camera_node',
+        name='axis_camera',
         namespace=namespace,
         parameters=[parameters],
-        remappings=[
-          ('/diagnostics', PathJoinSubstitution(['/', robot_namespace, 'diagnostics'])),
-        ],
-        output='screen'
-    )
-
-    velodyne_pointcloud_node = Node(
-        package='velodyne_pointcloud',
-        executable='velodyne_transform_node',
-        namespace=namespace,
         output='screen',
-        parameters=[parameters],
         remappings=[
-          ('/diagnostics', PathJoinSubstitution(['/', robot_namespace, 'diagnostics'])),
-          ('/tf', PathJoinSubstitution(['/', robot_namespace, 'tf'])),
-          ('/tf_static', PathJoinSubstitution(['/', robot_namespace, 'tf_static'])),
-          ('velodyne_points', 'points'),
-        ],
-    )
-
-    velodyne_laserscan_node = Node(
-        package='velodyne_laserscan',
-        executable='velodyne_laserscan_node',
-        namespace=namespace,
-        output='screen',
-        parameters=[parameters],
-        remappings=[
-          ('velodyne_points', 'points'),
-        ],
+            ('image_raw/compressed', 'image/compressed'),
+            ('joint_states',
+                PathJoinSubstitution(['/', robot_namespace, 'platform', 'joint_states'])),
+        ]
     )
 
     ld = LaunchDescription()
     ld.add_action(arg_namespace)
-    ld.add_action(arg_robot_namespace)
     ld.add_action(arg_parameters)
-    ld.add_action(velodyne_driver_node)
-    ld.add_action(velodyne_pointcloud_node)
-    ld.add_action(velodyne_laserscan_node)
+    ld.add_action(arg_robot_namespace)
+    ld.add_action(axis_node)
     return ld
