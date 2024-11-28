@@ -2,6 +2,11 @@
 Changelog for package clearpath_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.1 (2024-11-28)
+------------------
+* Added missing dependencies (`#108 <https://github.com/clearpathrobotics/clearpath_robot/issues/108>`_)
+* Contributors: Roni Kreinin
+
 1.0.0 (2024-11-26)
 ------------------
 * Added minimum version.
