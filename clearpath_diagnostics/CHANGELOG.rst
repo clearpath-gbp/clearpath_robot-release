@@ -2,6 +2,9 @@
 Changelog for package clearpath_diagnostics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.1 (2024-11-28)
+------------------
+
 1.0.0 (2024-11-26)
 ------------------
 * Added minimum version.
