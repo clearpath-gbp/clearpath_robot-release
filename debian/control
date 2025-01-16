@@ -1,0 +1,12 @@
+Source: ros-humble-clearpath-sensors
+Section: misc
+Priority: optional
+Maintainer: Luis Camero <lcamero@clearpathrobotics.com>
+Build-Depends: debhelper (>= 9.0.0), ros-humble-ament-cmake, ros-humble-ament-lint-auto <!nocheck>, ros-humble-ament-lint-common <!nocheck>, ros-humble-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-humble-clearpath-sensors
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-humble-depthai-ros-driver, ros-humble-ffmpeg-image-transport, ros-humble-flir-camera-description, ros-humble-flir-camera-msgs, ros-humble-image-proc, ros-humble-image-transport-plugins, ros-humble-microstrain-inertial-driver, ros-humble-nmea-navsat-driver, ros-humble-phidgets-spatial, ros-humble-realsense2-camera, ros-humble-spinnaker-camera-driver, ros-humble-umx-driver, ros-humble-urg-node, ros-humble-velodyne-driver, ros-humble-velodyne-laserscan, ros-humble-velodyne-pointcloud, ros-humble-ros-workspace
+Description: Clearpath sensor default launch files and configurations
