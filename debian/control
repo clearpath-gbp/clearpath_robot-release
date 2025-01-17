@@ -1,0 +1,12 @@
+Source: ros-jazzy-clearpath-hardware-interfaces
+Section: misc
+Priority: optional
+Maintainer: Luis Camero <lcamero@clearpathrobotics.com>
+Build-Depends: debhelper (>= 9.0.0), ros-jazzy-ament-cmake, ros-jazzy-clearpath-motor-msgs (>= 2.0.0), ros-jazzy-clearpath-platform-msgs (>= 2.0.0), ros-jazzy-controller-interface, ros-jazzy-controller-manager, ros-jazzy-controller-manager-msgs, ros-jazzy-geometry-msgs, ros-jazzy-hardware-interface, ros-jazzy-nav-msgs, ros-jazzy-pluginlib, ros-jazzy-rclcpp, ros-jazzy-sensor-msgs, ros-jazzy-std-msgs, ros-jazzy-std-srvs, ros-jazzy-tf2, ros-jazzy-tf2-ros, ros-jazzy-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-jazzy-clearpath-hardware-interfaces
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-jazzy-clearpath-control (>= 2.0.0), ros-jazzy-clearpath-motor-msgs (>= 2.0.0), ros-jazzy-clearpath-platform-description (>= 2.0.0), ros-jazzy-clearpath-platform-msgs (>= 2.0.0), ros-jazzy-controller-interface, ros-jazzy-controller-manager, ros-jazzy-controller-manager-msgs, ros-jazzy-geometry-msgs, ros-jazzy-hardware-interface, ros-jazzy-nav-msgs, ros-jazzy-pluginlib, ros-jazzy-rclcpp, ros-jazzy-sensor-msgs, ros-jazzy-std-msgs, ros-jazzy-std-srvs, ros-jazzy-tf2, ros-jazzy-tf2-ros, ros-jazzy-xacro, ros-jazzy-ros-workspace
+Description: Clearpath Platform Drivers.
