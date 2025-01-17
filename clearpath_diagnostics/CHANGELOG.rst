@@ -2,6 +2,9 @@
 Changelog for package clearpath_diagnostics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.1 (2025-01-17)
+------------------
+
 2.0.0 (2025-01-17)
 ------------------
 * Fix hard-coded humble packages (`#117 <https://github.com/clearpathrobotics/clearpath_robot/issues/117>`_)
