@@ -2,6 +2,9 @@
 Changelog for package lynx_motor_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.3 (2025-01-17)
+------------------
+
 2.0.2 (2025-01-17)
 ------------------
 * [clearpath_motor_drivers/lynx_motor_driver] Added rclcpp_action as dep.
