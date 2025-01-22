@@ -2,6 +2,9 @@
 Changelog for package clearpath_diagnostics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.4 (2025-01-22)
+------------------
+
 2.0.3 (2025-01-17)
 ------------------
 * [clearpath_diagnostics] Fixed version.
