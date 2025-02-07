@@ -2,6 +2,9 @@
 Changelog for package clearpath_diagnostics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.1 (2025-02-06)
+------------------
+
 2.1.0 (2025-01-31)
 ------------------
 * Feature/diagnostics (`#135 <https://github.com/clearpathrobotics/clearpath_robot/issues/135>`_)
