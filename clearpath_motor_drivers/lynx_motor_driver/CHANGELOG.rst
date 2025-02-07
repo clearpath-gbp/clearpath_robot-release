@@ -2,6 +2,9 @@
 Changelog for package lynx_motor_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.1 (2025-02-06)
+------------------
+
 2.1.0 (2025-01-31)
 ------------------
 * Lynx updates (`#139 <https://github.com/clearpathrobotics/clearpath_robot/issues/139>`_)
