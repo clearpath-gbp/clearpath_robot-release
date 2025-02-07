@@ -5,6 +5,9 @@ Changelog for package clearpath_sensors
 1.1.0 (2025-01-15)
 ------------------
 
+2.1.1 (2025-02-06)
+------------------
+
 2.1.0 (2025-01-31)
 ------------------
 * Jazzy Phidgets IMU Filter (`#138 <https://github.com/clearpathrobotics/clearpath_robot/issues/138>`_)
