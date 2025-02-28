@@ -1,0 +1,401 @@
+ros-jazzy-clearpath-hardware-interfaces (2.1.2-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 28 Feb 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (2.1.1-1noble) noble; urgency=high
+
+  * [clearpath_hardware_interfaces] Fixed BMS topic for fan control. (#145 <https://github.com/clearpathrobotics/clearpath_robot/issues/145>)
+  * Contributors: Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 06 Feb 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (2.1.0-1noble) noble; urgency=high
+
+  * [clearpath_hardware_interfaces] Added license to A300 fan control files. (#141 <https://github.com/clearpathrobotics/clearpath_robot/issues/141>)
+  * Added initial fan control for A300. (#136 <https://github.com/clearpathrobotics/clearpath_robot/issues/136>)
+    * Added initial fan control for A300.
+    * Fixed normal command and updated battery range.
+  * Contributors: Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 31 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (2.0.4-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 22 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (2.0.3-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 17 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (2.0.2-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 17 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (2.0.1-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 17 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (2.0.0-1noble) noble; urgency=high
+
+  * Fixed motor error lighting sequence (#120 <https://github.com/clearpathrobotics/clearpath_robot/issues/120>)
+    * Update motor error lighting sequence if motor_states changes without the lighting state changing
+    Added lighting emulator script
+    * Removed light emulator
+  * 1.1.0
+  * Changes.
+  * Add HE2410 & HE2411 battery support (#119 <https://github.com/clearpathrobotics/clearpath_robot/issues/119>) (#121 <https://github.com/clearpathrobotics/clearpath_robot/issues/121>)
+    * Cherry-pick from Humble
+  * Add HE2411 battery support (#119 <https://github.com/clearpathrobotics/clearpath_robot/issues/119>)
+    * Add support for the HE2410 and HE2411 batteries
+  * Add visibility_control.h to clearpath_hardware_interfaces, update includes to reference this file (#115 <https://github.com/clearpathrobotics/clearpath_robot/issues/115>)
+  * A300 lighting fixes (#114 <https://github.com/clearpathrobotics/clearpath_robot/issues/114>)
+    * Set NeedsReset to higher priority than Stopped
+    Changed NeedsReset lighting pattern
+    Set battery message initial values to not trigger battery fault
+    Increased low battery lighting sequence duration
+    * Updated low battery sequence
+  * A300 (#106 <https://github.com/clearpathrobotics/clearpath_robot/issues/106>)
+    * Added lynx hardware interface
+    * Lynx motor driver
+    Rename clearpath_platform namespace to clearpath_hardware_interfaces
+    * Added A300 and Inventus battery to generator
+    * A300 lighting
+    * Dependencies and README
+    * Rename platform to hardware_interfaces in hardware.xml
+    * Fix append of bms in generator
+    * Removed wheel_joints_ map
+    ---------
+    Co-authored-by: Luis Camero <mailto:lcamero@clearpathrobotics.com>
+  * Apply twist stamped changes
+  * Remove platform.launch.py
+  * Move battery_state to clearpath_hardware_interfaces
+  * Removed config install
+  * Renamed header directory
+  * Add clearpath_hardware_interfaces
+  * Contributors: Chris Iverach-Brereton, Luis Camero, Roni Kreinin, Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 17 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (1.1.0-1noble) noble; urgency=high
+
+  * Add HE2411 battery support (#119 <https://github.com/clearpathrobotics/clearpath_robot/issues/119>)
+    * Add support for the HE2410 and HE2411 batteries
+  * Contributors: Chris Iverach-Brereton
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 15 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (1.0.1-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 28 Nov 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (1.0.0-1noble) noble; urgency=high
+
+  * Fixed version of new package.
+  * Added minimum version.
+  * Remove platform.launch.py
+  * Move battery_state to clearpath_hardware_interfaces
+  * Removed config install
+  * Renamed header directory
+  * Add clearpath_hardware_interfaces
+  * Contributors: Luis Camero, Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 26 Nov 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.3.4-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 08 Oct 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.3.3-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 04 Oct 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.3.2-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Sun, 29 Sep 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.3.1-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 23 Sep 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.3.0-1noble) noble; urgency=high
+
+  * Changes.
+  * 0.3.0 Release Candidate with Main Changes (#81 <https://github.com/clearpathrobotics/clearpath_common/issues/81>)
+    * Added tests
+    * Added action to build from release and source
+    * Generator linting erros
+    * Customization linting errors
+    * Linting
+    * Fix: Remove IP address from discovery server launch so it listens on all NICs
+    * Changes.
+    * 0.2.8
+    * Add sysctl config file that changes ipfrag settings to support receiving large messages
+    * Added Zed URDF
+    * Added Zed to description generator
+    * Modified common parameter generation to always flatten
+    * Changes.
+    * 0.2.9
+    * Missing important remapping to mirror hardware topics
+    * Added topic to gazebo plugins
+    * Updated topic names to match gazebo message types
+    * Topics of simulated onboard sensors
+    * Realsense adds optical links when in simulator
+    * Changes.
+    * 0.2.10
+    * Modifies platform param to add GQ7 IMU data to ekf_localization and adds GQ7 URDF
+    * Fixes styling issues
+    * Set spawner as super client
+    * Changes.
+    * 0.2.11
+    * Removed duplicate class
+    * Use ROS1 covariance values
+    * Updated renamed macanum drive controller
+    * Enable gazebo friction plugin on DingoO
+    ---------
+    Co-authored-by: Hilary Luo <mailto:hluo@clearpathrobotics.com>
+    Co-authored-by: Tony Baltovski <mailto:tbaltovski@clearpathrobotics.com>
+    Co-authored-by: Steve Macenski <mailto:stevenmacenski@gmail.com>
+    Co-authored-by: robbiefish <mailto:rob.fisher@hbkworld.com>
+  * Add headers to Puma hardware
+  * Updated puma topics
+  * PumaHardwareInterface
+  * 0.2.8
+  * Changes.
+  * 0.2.7
+  * Changes.
+  * 0.2.6
+  * Changes.
+  * 0.2.5
+  * Changes.
+  * 0.2.4
+  * Changes.
+  * Fixed lighting lib install
+  * 0.2.3
+  * Changes.
+  * 0.2.2
+  * Changes.xx
+  * Fixed status topic names
+  * 0.2.1
+  * Changes.
+  * Added needs reset lighting pattern
+  * Contributors: Luis Camero, Roni Kreinin, Tony Baltovski, luis-camero
+  * Added tests
+  * Added action to build from release and source
+  * Generator linting erros
+  * Customization linting errors
+  * Linting
+  * Fix: Remove IP address from discovery server launch so it listens on all NICs
+  * Add sysctl config file that changes ipfrag settings to support receiving large messages
+  * Added Zed URDF
+  * Added Zed to description generator
+  * Modified common parameter generation to always flatten
+  * Missing important remapping to mirror hardware topics
+  * Added topic to gazebo plugins
+  * Updated topic names to match gazebo message types
+  * Topics of simulated onboard sensors
+  * Realsense adds optical links when in simulator
+  * Modifies platform param to add GQ7 IMU data to ekf_localization and adds GQ7 URDF
+  * Fixes styling issues
+  * Set spawner as super client
+  * Removed duplicate class
+  * Use ROS1 covariance values
+  * Updated renamed macanum drive controller
+  * Enable gazebo friction plugin on DingoO
+  * Contributors: Luis Camero, Roni Kreinin, Tony Baltovski, luis-camero
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 19 Sep 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.11-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 08 Aug 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.10-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 25 Jul 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.9-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 28 May 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.8-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 14 May 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.7-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 08 Apr 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.6-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 18 Jan 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.5-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 15 Jan 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.4-1noble) noble; urgency=high
+
+  * Fixed lighting lib install
+  * Contributors: Roni Kreinin
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 11 Jan 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.3-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 08 Jan 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.2-1noble) noble; urgency=high
+
+  * Fixed status topic names
+  * Contributors: Roni Kreinin
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 04 Jan 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.1-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 21 Dec 2023 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.2.0-1noble) noble; urgency=high
+
+  * Pass robot description to controller manager over topic
+  * [clearpath_platform] Re-added position state to hardware interface.
+  * Added W200 Hardware interface.
+  * Use path substitution
+  * Updated lighting patterns
+    Added charged state
+  * Comments
+  * Cleanup
+  * Fill lights by platform
+  * Lighting states
+  * Working HSV
+  * Initial lighting node
+  * Whitespace
+  * Base diff drive hardware and hardware interface class
+    J100 and W200 inherit from diff drive
+    Moved each platform into its own folder
+  * Contributors: Luis Camero, Roni Kreinin, Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 08 Dec 2023 05:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.1.3-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 03 Nov 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.1.2-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 02 Oct 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.1.1-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 25 Aug 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.1.0-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 17 Aug 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.0.9-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 31 Jul 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.0.8-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 24 Jul 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.0.7-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 19 Jul 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.0.6-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 13 Jul 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.0.5-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 12 Jul 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.0.4-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 07 Jul 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.0.3-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 05 Jul 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.0.2-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 04 Jul 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-hardware-interfaces (0.0.1-1noble) noble; urgency=high
+
+  * Added namespacing support
+  * Updated dependencies
+  * Added clearpath_generator_common
+    Moved clearpath_platform to clearpath_common
+    Fixed use_sim_time parameter issue with ekf_node
+  * Contributors: Roni Kreinin
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 21 Jun 2023 04:00:00 -0000
+
+
