@@ -2,42 +2,8 @@
 Changelog for package clearpath_diagnostics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.1.2 (2025-02-28)
+1.1.1 (2025-03-05)
 ------------------
-
-2.1.1 (2025-02-06)
-------------------
-
-2.1.0 (2025-01-31)
-------------------
-* Feature/diagnostics (`#135 <https://github.com/clearpathrobotics/clearpath_robot/issues/135>`_)
-  * Initial port of diagnostics to C++
-  * Remap axis camera topics to match API
-  * Monitor MCU Status message frequency
-  * Added firmware version check
-  * Group MCU diagnostics together
-  * Improve messaging around firmware versions
-  * Disable MCU diagnostics for A200
-* Contributors: Hilary Luo
-
-2.0.4 (2025-01-22)
-------------------
-
-2.0.3 (2025-01-17)
-------------------
-* [clearpath_diagnostics] Fixed version.
-* Contributors: Tony Baltovski
-
-2.0.2 (2025-01-17)
-------------------
-
-2.0.1 (2025-01-17)
-------------------
-
-2.0.0 (2025-01-17)
-------------------
-* Fix hard-coded humble packages (`#117 <https://github.com/clearpathrobotics/clearpath_robot/issues/117>`_)
-* Contributors: Chris Iverach-Brereton, Luis Camero, Tony Baltovski
 
 1.1.0 (2025-01-15)
 ------------------
