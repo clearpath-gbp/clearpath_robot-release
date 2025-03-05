@@ -2,6 +2,11 @@
 Changelog for package puma_motor_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.1.1 (2025-03-05)
+------------------
+* [clearpath_motor_drivers/puma_motor_driver] Fixed copy size.
+* Contributors: Tony Baltovski
+
 1.1.0 (2025-01-15)
 ------------------
 
