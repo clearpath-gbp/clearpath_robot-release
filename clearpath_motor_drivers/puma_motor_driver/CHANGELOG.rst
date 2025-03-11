@@ -2,18 +2,42 @@
 Changelog for package puma_motor_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.1.2 (2025-03-11)
+1.1.0 (2025-01-15)
 ------------------
-* Fix: Robust puma initialization
-* Contributors: Stephen Phillips, Tony Baltovski
 
-1.1.1 (2025-03-05)
+2.2.0 (2025-03-11)
 ------------------
+* [clearpath_motor_drivers/puma_motor_driver] Linting fix.
 * [clearpath_motor_drivers/puma_motor_driver] Fixed copy size.
 * Contributors: Tony Baltovski
 
-1.1.0 (2025-01-15)
+2.1.2 (2025-02-28)
 ------------------
+
+2.1.1 (2025-02-06)
+------------------
+
+2.1.0 (2025-01-31)
+------------------
+
+2.0.4 (2025-01-22)
+------------------
+
+2.0.3 (2025-01-17)
+------------------
+
+2.0.2 (2025-01-17)
+------------------
+
+2.0.1 (2025-01-17)
+------------------
+
+2.0.0 (2025-01-17)
+------------------
+* 1.1.0
+* Changes.
+* Add clearpath_motor_drivers, puma_motor_driver
+* Contributors: Luis Camero, Tony Baltovski
 
 1.0.1 (2024-11-28)
 ------------------
