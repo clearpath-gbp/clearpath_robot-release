@@ -5,6 +5,12 @@ Changelog for package puma_motor_driver
 1.1.0 (2025-01-15)
 ------------------
 
+2.2.0 (2025-03-11)
+------------------
+* [clearpath_motor_drivers/puma_motor_driver] Linting fix.
+* [clearpath_motor_drivers/puma_motor_driver] Fixed copy size.
+* Contributors: Tony Baltovski
+
 2.1.2 (2025-02-28)
 ------------------
 
