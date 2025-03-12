@@ -9,6 +9,9 @@ Changelog for package clearpath_robot
   * Alphabetical dependencies
 * Contributors: luis-camero
 
+2.2.1 (2025-03-12)
+------------------
+
 2.2.0 (2025-03-11)
 ------------------
 * Graceful shutdown service (`#147 <https://github.com/clearpathrobotics/clearpath_robot/issues/147>`_)
