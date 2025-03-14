@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # Software License Agreement (BSD)
 #
 # @author    Roni Kreinin <rkreinin@clearpathrobotics.com>
@@ -27,20 +25,47 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-
-# Redistribution and use in source and binary forms, with or without
-# modification, is not permitted without the express permission
-# of Clearpath Robotics.
-
-from clearpath_generator_common.param.generator import ParamGenerator
-from clearpath_generator_robot.param.sensors import SensorParam
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
 
 
-class RobotParamGenerator(ParamGenerator):
+def generate_launch_description():
+    namespace = LaunchConfiguration('namespace')
+    in_theora = LaunchConfiguration('in_theora')
+    out_raw = LaunchConfiguration('out_raw')
 
-    def generate_sensors(self) -> None:
-        sensors = self.clearpath_config.sensors.get_all_sensors()
-        for sensor in sensors:
-            if sensor.get_launch_enabled():
-                sensor_param = SensorParam(sensor, self.namespace, self.sensors_params_path)
-                sensor_param.generate_config()
+    arg_namespace = DeclareLaunchArgument(
+        'namespace',
+        default_value=''
+    )
+
+    arg_in_theora = DeclareLaunchArgument(
+        'in_theora',
+        default_value='theora'
+    )
+
+    arg_out_raw = DeclareLaunchArgument(
+        'out_raw',
+        default_value='image'
+    )
+
+    theora_transport_node = Node(
+        name='image_theora_to_raw',
+        namespace=namespace,
+        package='image_transport',
+        executable='republish',
+        remappings=[
+            ('in/theora', in_theora),
+            ('out', out_raw),
+        ],
+        arguments=['theora', 'raw'],
+    )
+
+    ld = LaunchDescription()
+    ld.add_action(arg_namespace)
+    ld.add_action(arg_in_theora)
+    ld.add_action(arg_out_raw)
+    ld.add_action(theora_transport_node)
+    return ld
