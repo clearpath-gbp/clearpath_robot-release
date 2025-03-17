@@ -1,7 +1,9 @@
-# Software License Agreement (BSD)
+#!/usr/bin/env python3
+
+# # Software License Agreement (BSD)
 #
-# @author    Roni Kreinin <rkreinin@clearpathrobotics.com>
-# @copyright (c) 2023, Clearpath Robotics, Inc., All rights reserved.
+# Author    Roni Kreinin <rkreinin@clearpathrobotics.com>
+# Copyright (c) 2025, Clearpath Robotics, Inc., All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -25,47 +27,34 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
 
+import socket
+import subprocess
+import time
 
-def generate_launch_description():
-    namespace = LaunchConfiguration('namespace')
-    in_raw = LaunchConfiguration('in_raw')
-    out_theora = LaunchConfiguration('out_theora')
+shutdown_port = 11415
 
-    arg_namespace = DeclareLaunchArgument(
-        'namespace',
-        default_value=''
-    )
+# Create UDP socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.setblocking(0)
+s.settimeout(0.5)
 
-    arg_in_raw = DeclareLaunchArgument(
-        'in_raw',
-        default_value='image'
-    )
+# Attempt to bind socket
+while True:
+    try:
+        s.bind(('192.168.131.1', shutdown_port))
+        print('Socket 192.168.131.1:11415 bound')
+        break
+    except OSError:
+        time.sleep(1)
 
-    arg_out_theora = DeclareLaunchArgument(
-        'out_theora',
-        default_value='theora'
-    )
-
-    theora_transport_node = Node(
-        name='image_raw_to_theora',
-        namespace=namespace,
-        package='image_transport',
-        executable='republish',
-        remappings=[
-            ('in', in_raw),
-            ('out/theora', out_theora),
-        ],
-        arguments=['raw', 'theora'],
-    )
-
-    ld = LaunchDescription()
-    ld.add_action(arg_namespace)
-    ld.add_action(arg_in_raw)
-    ld.add_action(arg_out_theora)
-    ld.add_action(theora_transport_node)
-    return ld
+# Wait for shutdown signal
+while True:
+    try:
+        (data, addr) = s.recvfrom(64)
+        if 'SHUTDOWN' in str(data):
+            print('Shutting down.')
+            subprocess.run(['shutdown', '-h', 'now'])
+    except socket.timeout:
+        pass

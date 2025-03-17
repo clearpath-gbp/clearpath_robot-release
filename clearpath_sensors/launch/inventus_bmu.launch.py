@@ -1,7 +1,7 @@
 # Software License Agreement (BSD)
 #
-# @author    Roni Kreinin <rkreinin@clearpathrobotics.com>
-# @copyright (c) 2023, Clearpath Robotics, Inc., All rights reserved.
+# @author    Luis Camero <lcamero@clearpathrobotics.com>
+# @copyright (c) 2025, Clearpath Robotics, Inc., All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -27,45 +27,44 @@
 # POSSIBILITY OF SUCH DAMAGE.
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+
 from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+
+ARGUMENTS = [
+    DeclareLaunchArgument('namespace', default_value='',
+                          description='Robot namespace')
+]
 
 
 def generate_launch_description():
+    parameters = LaunchConfiguration('parameters')
     namespace = LaunchConfiguration('namespace')
-    in_compressed = LaunchConfiguration('in_compressed')
-    out_raw = LaunchConfiguration('out_raw')
 
     arg_namespace = DeclareLaunchArgument(
         'namespace',
-        default_value=''
-    )
+        default_value='')
 
-    arg_in_compressed = DeclareLaunchArgument(
-        'in_compressed',
-        default_value='compressed'
-    )
+    arg_parameters = DeclareLaunchArgument(
+        'parameters',
+        default_value=PathJoinSubstitution([
+          FindPackageShare('clearpath_sensors'),
+          'config',
+          'inventus_bmu.yaml'
+        ]))
 
-    arg_out_raw = DeclareLaunchArgument(
-        'out_raw',
-        default_value='image'
-    )
-
-    compressed_transport_node = Node(
-        name='image_compressed_to_raw',
+    inventus_node = Node(
+        package='inventus_bmu',
         namespace=namespace,
-        package='image_transport',
-        executable='republish',
-        remappings=[
-            ('in/compressed', in_compressed),
-            ('out', out_raw),
-        ],
-        arguments=['compressed', 'raw'],
+        executable='inventus_bmu_driver',
+        name='inventus_bmu_node',
+        parameters=[parameters],
+        output='screen',
     )
 
     ld = LaunchDescription()
     ld.add_action(arg_namespace)
-    ld.add_action(arg_in_compressed)
-    ld.add_action(arg_out_raw)
-    ld.add_action(compressed_transport_node)
+    ld.add_action(arg_parameters)
+    ld.add_action(inventus_node)
     return ld
