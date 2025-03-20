@@ -2,6 +2,9 @@
 Changelog for package clearpath_generator_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.2.3 (2025-03-20)
+------------------
+
 2.2.2 (2025-03-17)
 ------------------
 * Fix/diag remap (`#168 <https://github.com/clearpathrobotics/clearpath_robot/issues/168>`_)
