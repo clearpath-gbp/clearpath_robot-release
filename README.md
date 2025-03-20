@@ -1,3 +1,33 @@
+## clearpath_robot (jazzy) - 2.2.3-1
+
+The packages in the `clearpath_robot` repository were released into the `jazzy` distro by running `/usr/bin/bloom-release clearpath_robot -t jazzy -r jazzy` on `Thu, 20 Mar 2025 15:01:06 -0000`
+
+These packages were released:
+- `clearpath_diagnostics`
+- `clearpath_generator_robot`
+- `clearpath_hardware_interfaces`
+- `clearpath_robot`
+- `clearpath_sensors`
+- `lynx_motor_driver`
+- `puma_motor_driver`
+
+Version of package(s) in repository `clearpath_robot`:
+
+- upstream repository: https://github.com/clearpathrobotics/clearpath_robot.git
+- release repository: https://github.com/clearpath-gbp/clearpath_robot-release.git
+- rosdistro version: `2.2.2-1`
+- old version: `2.2.2-1`
+- new version: `2.2.3-1`
+
+Versions of tools used:
+
+- bloom version: `0.12.0`
+- catkin_pkg version: `1.0.0`
+- rosdep version: `0.25.1`
+- rosdistro version: `1.0.1`
+- vcstools version: `0.1.42`
+
+
 ## clearpath_robot (jazzy) - 2.2.2-1
 
 The packages in the `clearpath_robot` repository were released into the `jazzy` distro by running `/usr/bin/bloom-release clearpath_robot -r jazzy -t jazzy` on `Mon, 17 Mar 2025 14:14:09 -0000`
