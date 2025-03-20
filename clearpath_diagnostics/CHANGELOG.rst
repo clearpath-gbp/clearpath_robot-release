@@ -2,6 +2,11 @@
 Changelog for package clearpath_diagnostics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.2.3 (2025-03-20)
+------------------
+* [clearpath_diagnostics] Updated for changes to MCU status message.
+* Contributors: Tony Baltovski
+
 2.2.2 (2025-03-17)
 ------------------
 
