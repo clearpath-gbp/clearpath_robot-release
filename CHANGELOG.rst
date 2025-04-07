@@ -2,6 +2,9 @@
 Changelog for package clearpath_diagnostics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.2.4 (2025-04-07)
+------------------
+
 2.2.3 (2025-03-20)
 ------------------
 * [clearpath_diagnostics] Updated for changes to MCU status message.
