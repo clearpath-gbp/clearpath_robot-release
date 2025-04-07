@@ -2,6 +2,11 @@
 Changelog for package clearpath_generator_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.2.4 (2025-04-07)
+------------------
+* [clearpath_generator_robot] Added python3-apt as exec dep. (`#182 <https://github.com/clearpathrobotics/clearpath_robot/issues/182>`_)
+* Contributors: Tony Baltovski
+
 2.2.3 (2025-03-20)
 ------------------
 
