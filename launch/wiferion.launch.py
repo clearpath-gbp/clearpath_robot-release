@@ -26,35 +26,19 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 from launch import LaunchDescription
-from launch.actions import (
-    DeclareLaunchArgument,
-    EmitEvent,
-    LogInfo,
-    RegisterEventHandler
-)
-from launch.events import matches_action
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 
-from launch_ros.actions import LifecycleNode
-from launch_ros.event_handlers import OnStateTransition
-from launch_ros.events.lifecycle import ChangeState
+from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-
-import lifecycle_msgs.msg
 
 
 def generate_launch_description():
-
-    namespace = LaunchConfiguration('namespace')
     parameters = LaunchConfiguration('parameters')
-    robot_namespace = LaunchConfiguration('robot_namespace')
+    namespace = LaunchConfiguration('namespace')
 
     arg_namespace = DeclareLaunchArgument(
         'namespace',
-        default_value='')
-
-    arg_robot_namespace = DeclareLaunchArgument(
-        'robot_namespace',
         default_value='')
 
     arg_parameters = DeclareLaunchArgument(
@@ -62,50 +46,20 @@ def generate_launch_description():
         default_value=PathJoinSubstitution([
           FindPackageShare('clearpath_sensors'),
           'config',
-          'ouster_os1.yaml'
+          'wiferion.yaml'
         ]))
 
-    ouster_node = LifecycleNode(
-        package='ouster_ros',
-        executable='os_driver',
-        name='ouster_driver',
-        output='screen',
-        parameters=[parameters],
+    wiferion_node = Node(
+        name='wiferion',
+        package='wiferion_charger',
         namespace=namespace,
-        remappings=[
-          ('/diagnostics', PathJoinSubstitution(['/', robot_namespace, 'diagnostics'])),
-          ('/tf', PathJoinSubstitution(['/', robot_namespace, 'tf'])),
-          ('/tf_static', PathJoinSubstitution(['/', robot_namespace, 'tf_static'])),
-          ('imu', 'imu/data_raw')
-        ]
-    )
-
-    configure_event = EmitEvent(
-        event=ChangeState(
-            lifecycle_node_matcher=matches_action(ouster_node),
-            transition_id=lifecycle_msgs.msg.Transition.TRANSITION_CONFIGURE,
-        )
-    )
-
-    activate_event = RegisterEventHandler(
-        OnStateTransition(
-            target_lifecycle_node=ouster_node, goal_state='inactive',
-            entities=[
-                LogInfo(
-                    msg='[LifecycleLaunch] Ouster driver node is activating.'),
-                EmitEvent(event=ChangeState(
-                    lifecycle_node_matcher=matches_action(ouster_node),
-                    transition_id=lifecycle_msgs.msg.Transition.TRANSITION_ACTIVATE,
-                )),
-            ],
-        )
+        executable='wiferion_node',
+        parameters=[parameters],
+        output='screen',
     )
 
     ld = LaunchDescription()
     ld.add_action(arg_namespace)
-    ld.add_action(arg_robot_namespace)
     ld.add_action(arg_parameters)
-    ld.add_action(ouster_node)
-    ld.add_action(configure_event)
-    ld.add_action(activate_event)
+    ld.add_action(wiferion_node)
     return ld
