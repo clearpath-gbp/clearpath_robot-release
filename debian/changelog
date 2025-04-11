@@ -1,0 +1,340 @@
+ros-jazzy-clearpath-robot (2.3.0-1noble) noble; urgency=high
+
+  * Feature: Add CAN adapters (#192 <https://github.com/clearpathrobotics/clearpath_robot/issues/192>)
+  * Automatically rerun install script on package update (#193 <https://github.com/clearpathrobotics/clearpath_robot/issues/193>)
+  * Move symlinks into clearpath-robot.service.wants instead of multi-user.target.wants (#187 <https://github.com/clearpathrobotics/clearpath_robot/issues/187>)
+  * Add clearpath_tests as dependency for metapackage (#180 <https://github.com/clearpathrobotics/clearpath_robot/issues/180>)
+  * Move extras launch into a new service (#178 <https://github.com/clearpathrobotics/clearpath_robot/issues/178>)
+  * Contributors: Chris Iverach-Brereton, Luis Camero
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 11 Apr 2025 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.2.4-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 07 Apr 2025 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.2.3-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 20 Mar 2025 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.2.2-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 17 Mar 2025 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.2.1-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 12 Mar 2025 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.2.0-1noble) noble; urgency=high
+
+  * Graceful shutdown service (#147 <https://github.com/clearpathrobotics/clearpath_robot/issues/147>)
+  * Contributors: Roni Kreinin
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 11 Mar 2025 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.1.2-1noble) noble; urgency=high
+
+  * Turn off clearing of SHM on log out (#152 <https://github.com/clearpathrobotics/clearpath_robot/issues/152>)
+    Previously the SHM links were being cleared out when all user sessions ended which was causing ROS communication to fail and the robot to stop working.
+  * Contributors: Hilary Luo
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 28 Feb 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.1.1-1noble) noble; urgency=high
+
+  * VCAN fix for Lynx remote request issue (#146 <https://github.com/clearpathrobotics/clearpath_robot/issues/146>)
+  * Contributors: Roni Kreinin
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 06 Feb 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.1.0-1noble) noble; urgency=high
+
+  * Check that user exists before installing (#140 <https://github.com/clearpathrobotics/clearpath_robot/issues/140>)
+  * Contributors: luis-camero
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 31 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.0.4-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 22 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.0.3-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 17 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.0.2-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 17 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.0.1-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 17 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (2.0.0-1noble) noble; urgency=high
+
+  * [clearpath_robot] Fixed comment.
+  * [clearpath_robot] Added check for binary install path and fallback to check from a workspace in generate. (#127 <https://github.com/clearpathrobotics/clearpath_robot/issues/127>)
+  * 1.1.0
+  * Changes.
+  * Add dependency for ewellix_driver (#125 <https://github.com/clearpathrobotics/clearpath_robot/issues/125>)
+    * Add dependency for ewellix_driver
+    * Alphabetical dependencies
+  * Add zenoh service files & generators (#116 <https://github.com/clearpathrobotics/clearpath_robot/issues/116>)
+    * Add zenoh service files & generators
+  * Remove udev rules for joy controllers (#113 <https://github.com/clearpathrobotics/clearpath_robot/issues/113>)
+  * A300 (#106 <https://github.com/clearpathrobotics/clearpath_robot/issues/106>)
+    * Added lynx hardware interface
+    * Lynx motor driver
+    Rename clearpath_platform namespace to clearpath_hardware_interfaces
+    * Added A300 and Inventus battery to generator
+    * A300 lighting
+    * Dependencies and README
+    * Rename platform to hardware_interfaces in hardware.xml
+    * Fix append of bms in generator
+    * Removed wheel_joints_ map
+    ---------
+    Co-authored-by: Luis Camero <mailto:lcamero@clearpathrobotics.com>
+  * Make robot service always restart vcan
+  * Add ur_robot_driver dependency
+  * Add vcan to robot service wants
+  * Change vcan service to use generated script
+  * 0.3.2
+  * Changes.
+  * [clearpath_robot] Added script to grab diagnostic logs for troublesho… (#84 <https://github.com/clearpathrobotics/clearpath_robot/issues/84>)
+    * [clearpath_robot] Added script to grab diagnostic logs for troubleshooting.
+    * Make grab-diagnostics script executable and installed
+    ---------
+    Co-authored-by: Luis Camero <mailto:lcamero@clearpathrobotics.com>
+  * Remove missing jazzy dependencies (for now)
+  * Socket CAN Bridges (#93 <https://github.com/clearpathrobotics/clearpath_robot/issues/93>)
+    * Generate can bridges
+    * Generate script source robot workspace
+    * Remove extra line
+    ---------
+    Co-authored-by: Roni Kreinin <mailto:rkreinin@clearpathrobotics.com>
+  * Contributors: Chris Iverach-Brereton, Luis Camero, Roni Kreinin, Tony Baltovski, luis-camero
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 17 Jan 2025 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (1.0.1-1noble) noble; urgency=high
+
+  * Added missing dependencies (#108 <https://github.com/clearpathrobotics/clearpath_robot/issues/108>)
+  * Contributors: Roni Kreinin
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 28 Nov 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (1.0.0-1noble) noble; urgency=high
+
+  * Added minimum version.
+  * Make robot service always restart vcan
+  * Add ur_robot_driver dependency
+  * Add vcan to robot service wants
+  * Change vcan service to use generated script
+  * Contributors: Luis Camero, Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 26 Nov 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.3.2-1noble) noble; urgency=high
+
+  * [clearpath_robot] Added script to grab diagnostic logs for troubleshooting.
+  * Contributors: Luis Camero, Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 04 Oct 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.3.1-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 23 Sep 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.3.0-1noble) noble; urgency=high
+
+  * Enable vcan service when installed
+  * Add dependency socat
+  * Headers to bash scripts
+  * Add R100 to Puma enabled
+  * Use root as user
+  * Add vcan service
+  * Added vcan script
+  * Added SRDF generation to robot service
+  * Removed incorrect dependency
+  * Added manipulators dependencies and service
+  * Contributors: Luis Camero, luis-camero
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 19 Sep 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.15-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 12 Aug 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.14-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 08 Aug 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.13-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 30 Jul 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.12-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 22 Jul 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.11-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 28 May 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.10-1noble) noble; urgency=high
+
+  * Block microstrain in J100 MCU udev rule
+  * Contributors: Hilary Luo
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 16 May 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.9-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 16 May 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.8-1noble) noble; urgency=high
+
+  * Ensure that the network interfaces are active before clearpath_robot service starts - required for FastDDS
+  * Contributors: Hilary Luo
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 14 May 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.7-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 10 Apr 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.6-1noble) noble; urgency=high
+
+  * Removed the argument to source
+  * Added platform and sensor service to robot service wants
+  * Added discovery server service
+  * Contributors: Hilary Luo, Luis Camero
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 08 Apr 2024 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.5-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 07 Mar 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.4-1noble) noble; urgency=high
+
+  * [clearpath_robot] Added udev rule for STM32 ROM bootloader.
+  * Contributors: Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Fri, 19 Jan 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.3-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 18 Jan 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.2-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 10 Jan 2024 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.1-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 18 Dec 2023 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.2.0-1noble) noble; urgency=high
+
+  * Run platform and sensor services as user
+  * [clearpath_robot] Added udev rule to automatically bring-up CANBUS PCIe card for W200.
+  * [clearpath_robot] Added can-utils as dep.
+  * Contributors: Roni Kreinin, Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 13 Dec 2023 05:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.1.3-1noble) noble; urgency=high
+
+  * Run platform and sensor services as user
+  * Contributors: Roni Kreinin
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 04 Oct 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.1.2-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Wed, 27 Sep 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.1.1-1noble) noble; urgency=high
+
+
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Mon, 11 Sep 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.1.0-1noble) noble; urgency=high
+
+  * Create dummy launch files if they do not exist
+  * Fixed sensors launch file name
+  * Contributors: Luis Camero, Roni Kreinin
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 31 Aug 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.0.3-1noble) noble; urgency=high
+
+  * Linter
+  * Move author in all package.xml to pass xml linter.
+  * Contributors: Roni Kreinin, Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 15 Aug 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.0.2-1noble) noble; urgency=high
+
+  * Config update
+  * Contributors: Roni Kreinin
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Tue, 25 Jul 2023 04:00:00 -0000
+
+ros-jazzy-clearpath-robot (0.0.1-1noble) noble; urgency=high
+
+  * [clearpath_platform] Added J100 MCU, FTDI and Logitech joy udev rules.
+  * Moved clearpath_platform to clearpath_common
+    Added clearpath_generator_robot
+    Created clearpath_robot metapackage
+    Moved scripts and services into clearpath_robot
+  * Contributors: Roni Kreinin, Tony Baltovski
+
+ -- Luis Camero <lcamero@clearpathrobotics.com>  Thu, 20 Jul 2023 04:00:00 -0000
+
+
