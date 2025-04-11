@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>clearpath_sensors</name>
-  <version>2.2.4</version>
+  <version>2.3.0</version>
   <description>Clearpath sensor default launch files and configurations</description>
 
   <maintainer email="lcamero@clearpathrobotics.com">Luis Camero</maintainer>
@@ -32,6 +32,14 @@
   <exec_depend>velodyne_driver</exec_depend>
   <exec_depend>velodyne_pointcloud</exec_depend>
   <exec_depend>velodyne_laserscan</exec_depend>
+
+  <!--
+    ROS driver packages that are currently source-only
+    See appropriate repositories on GitHub for installation instructions
+
+    <exec_depend version_eq="7.0.6">fixposition_driver_ros2</exec_depend>
+    <exec_depend>zed_wrapper</exec_depend>
+  -->
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
