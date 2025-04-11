@@ -1,3 +1,0 @@
-wiferion:
-  ros__parameters:
-    canbus_dev: can0
