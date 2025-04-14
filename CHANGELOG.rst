@@ -2,6 +2,9 @@
 Changelog for package clearpath_sensors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.3.1 (2025-04-14)
+------------------
+
 2.3.0 (2025-04-11)
 ------------------
 * Feature: Wiferion Charger (`#194 <https://github.com/clearpathrobotics/clearpath_robot/issues/194>`_)
