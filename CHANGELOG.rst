@@ -2,6 +2,9 @@
 Changelog for package clearpath_platform
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.3.1 (2025-04-14)
+------------------
+
 2.3.0 (2025-04-11)
 ------------------
 * [clearpath_hardware_interfaces] Added user fan control and hysteresis when leaving a warning/error state.
