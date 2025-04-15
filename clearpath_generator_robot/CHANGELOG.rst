@@ -1,129 +1,27 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package clearpath_generator_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1.3.0 (2025-04-15)
+------------------
+* Feature: Add UR socat tool communication script (`#174 <https://github.com/clearpathrobotics/clearpath_robot/issues/174>`_)
+* Contributors: Luis Camero
 
-2.3.1 (2025-04-14)
+1.2.0 (2025-03-14)
 ------------------
 
-2.3.0 (2025-04-11)
+1.1.2 (2025-03-11)
 ------------------
-* Feature: Add UR socat tool communication script (`#174 <https://github.com/clearpathrobotics/clearpath_robot/issues/174>`_) (`#179 <https://github.com/clearpathrobotics/clearpath_robot/issues/179>`_)
-* Add exception handlers to the generators for Unsupported* exceptions (`#181 <https://github.com/clearpathrobotics/clearpath_robot/issues/181>`_)
-* Move extras launch into a new service (`#178 <https://github.com/clearpathrobotics/clearpath_robot/issues/178>`_)
-* Feature/diagnostic categories (`#175 <https://github.com/clearpathrobotics/clearpath_robot/issues/175>`_)
-* Feature/inventus diagnostics (`#170 <https://github.com/clearpathrobotics/clearpath_robot/issues/170>`_)
-* Contributors: Chris Iverach-Brereton, Hilary Luo, luis-camero
+* Fix: Change path to imu_filter to platform config
+* Change path to imu_filter to platform config
+* Contributors: Luis Camero, Tony Baltovski
 
-2.2.4 (2025-04-07)
+1.1.1 (2025-03-05)
 ------------------
-* [clearpath_generator_robot] Added python3-apt as exec dep. (`#182 <https://github.com/clearpathrobotics/clearpath_robot/issues/182>`_)
-* Contributors: Tony Baltovski
-
-2.2.3 (2025-03-20)
-------------------
-
-2.2.2 (2025-03-17)
-------------------
-* Fix/diag remap (`#168 <https://github.com/clearpathrobotics/clearpath_robot/issues/168>`_)
-  * Remap diagnostics topic in fan control node
-  * Remap diagnostics topic in wireless watcher node
-* Contributors: Hilary Luo
-
-2.2.1 (2025-03-12)
-------------------
-* Fix: Change path to imu_filter to platform config (`#167 <https://github.com/clearpathrobotics/clearpath_robot/issues/167>`_)
-  Co-authored-by: Luis Camero <lcamero@clearpathrobotics.com>
-* Contributors: Tony Baltovski
-
-2.2.0 (2025-03-11)
-------------------
-* Apply serial, IP address, MX ID to OAK-D cameras (`#159 <https://github.com/clearpathrobotics/clearpath_robot/issues/159>`_)
-* [clearpath_generator_robot] Added inventus_bmu as exec dependency.
-* Added Lynx motor driver diagnostics (`#149 <https://github.com/clearpathrobotics/clearpath_robot/issues/149>`_)
-  * Removed trailing spaces
-  * Added Lynx motor diagnostics
-* Feature/lighting diagnostics (`#144 <https://github.com/clearpathrobotics/clearpath_robot/issues/144>`_)
-  * Add lighting diagnostics
-  * Remap lighting diagnostic topic
-  * Set diagnostic updater hardware id to platform since serial isn't locally available
-  * Improve clarity of diagnostic summary text
-* Contributors: Chris Iverach-Brereton, Hilary Luo, Tony Baltovski
-
-2.1.2 (2025-02-28)
-------------------
-
-2.1.1 (2025-02-06)
-------------------
-
-2.1.0 (2025-01-31)
-------------------
-* Jazzy Phidgets IMU Filter (`#138 <https://github.com/clearpathrobotics/clearpath_robot/issues/138>`_)
-  * IMU Filter
+* IMU Filter (`#134 <https://github.com/clearpathrobotics/clearpath_robot/issues/134>`_)
   * Add imu_filter launch file and added madgwick entry to filter
   * Add imu filter to generator
   * Rename imu_filter_node to imu_filter_madgwick
-* Added initial fan control for A300. (`#136 <https://github.com/clearpathrobotics/clearpath_robot/issues/136>`_)
-  * Added initial fan control for A300.
-  * Fixed normal command and updated battery range.
-* Feature/diagnostics (`#135 <https://github.com/clearpathrobotics/clearpath_robot/issues/135>`_)
-  * Initial port of diagnostics to C++
-  * Remap axis camera topics to match API
-  * Monitor MCU Status message frequency
-  * Added firmware version check
-  * Group MCU diagnostics together
-  * Improve messaging around firmware versions
-  * Disable MCU diagnostics for A200
-* Contributors: Hilary Luo, Tony Baltovski, luis-camero
-
-2.0.4 (2025-01-22)
-------------------
-* Add config and launch for inventus
-* Contributors: Luis Camero
-
-2.0.3 (2025-01-17)
-------------------
-
-2.0.2 (2025-01-17)
-------------------
-
-2.0.1 (2025-01-17)
-------------------
-
-2.0.0 (2025-01-17)
-------------------
-* Add the package initializations that used to be in clearpath_common_generator into the robot generators (`#110 <https://github.com/clearpathrobotics/clearpath_robot/issues/110>`_)
-* A300 VCAN (`#111 <https://github.com/clearpathrobotics/clearpath_robot/issues/111>`_)
-  * Inventus CAN module ids depending on battery configuration
-  * Name each socketcan interface launch file by interface name
-  * Pass filename argument to launchfile
-* Add dependency on inventus_bmu (`#109 <https://github.com/clearpathrobotics/clearpath_robot/issues/109>`_)
-* A300 (`#106 <https://github.com/clearpathrobotics/clearpath_robot/issues/106>`_)
-  * Added lynx hardware interface
-  * Lynx motor driver
-  Rename clearpath_platform namespace to clearpath_hardware_interfaces
-  * Added A300 and Inventus battery to generator
-  * A300 lighting
-  * Dependencies and README
-  * Rename platform to hardware_interfaces in hardware.xml
-  * Fix append of bms in generator
-  * Removed wheel_joints\_ map
-  ---------
-  Co-authored-by: Luis Camero <lcamero@clearpathrobotics.com>
-* Fixed spelling
-* Move battery_state to clearpath_hardware_interfaces
-* Use clearpath_ros2_socketcan_interface launch files
-* Added pointcloud support to OakD
-* Catch the new unsupported platform/accessory exceptions in the tests
-* Remove missing jazzy dependencies (for now)
-* Socket CAN Bridges (`#93 <https://github.com/clearpathrobotics/clearpath_robot/issues/93>`_)
-  * Generate can bridges
-  * Generate script source robot workspace
-  * Remove extra line
-  ---------
-  Co-authored-by: Roni Kreinin <rkreinin@clearpathrobotics.com>
-* Change puma messages dependency to the new clearpath_motor_msgs
-* Use the distribution provided by the common generators
-* Contributors: Chris Iverach-Brereton, Luis Camero, Roni Kreinin, Tony Baltovski, luis-camero
+* Contributors: luis-camero
 
 1.1.0 (2025-01-15)
 ------------------

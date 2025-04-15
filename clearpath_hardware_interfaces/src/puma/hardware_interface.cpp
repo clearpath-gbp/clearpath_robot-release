@@ -38,12 +38,12 @@ PumaHardwareInterface::PumaHardwareInterface(std::string node_name)
 : Node(node_name)
 {
   sub_feedback_ = create_subscription<clearpath_motor_msgs::msg::PumaMultiFeedback>(
-    "platform/motors/feedback",
+    "platform/puma/feedback",
     rclcpp::SensorDataQoS(),
     std::bind(&PumaHardwareInterface::feedback_callback, this, std::placeholders::_1));
 
   pub_cmd_ = create_publisher<sensor_msgs::msg::JointState>(
-    "platform/motors/cmd",
+    "platform/puma/cmd",
     rclcpp::SensorDataQoS());
 }
 

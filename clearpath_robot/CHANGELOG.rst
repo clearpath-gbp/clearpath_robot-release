@@ -2,106 +2,27 @@
 Changelog for package clearpath_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.3.1 (2025-04-14)
+1.3.0 (2025-04-15)
 ------------------
 
-2.3.0 (2025-04-11)
-------------------
-* Feature: Add CAN adapters (`#192 <https://github.com/clearpathrobotics/clearpath_robot/issues/192>`_)
-* Automatically rerun install script on package update (`#193 <https://github.com/clearpathrobotics/clearpath_robot/issues/193>`_)
-* Move symlinks into `clearpath-robot.service.wants` instead of `multi-user.target.wants` (`#187 <https://github.com/clearpathrobotics/clearpath_robot/issues/187>`_)
-* Add `clearpath_tests` as dependency for metapackage (`#180 <https://github.com/clearpathrobotics/clearpath_robot/issues/180>`_)
-* Move extras launch into a new service (`#178 <https://github.com/clearpathrobotics/clearpath_robot/issues/178>`_)
-* Contributors: Chris Iverach-Brereton, Luis Camero
-
-2.2.4 (2025-04-07)
+1.2.0 (2025-03-14)
 ------------------
 
-2.2.3 (2025-03-20)
+1.1.2 (2025-03-11)
 ------------------
 
-2.2.2 (2025-03-17)
+1.1.1 (2025-03-05)
 ------------------
-
-2.2.1 (2025-03-12)
-------------------
-
-2.2.0 (2025-03-11)
-------------------
-* Graceful shutdown service (`#147 <https://github.com/clearpathrobotics/clearpath_robot/issues/147>`_)
-* Contributors: Roni Kreinin
-
-2.1.2 (2025-02-28)
-------------------
-* Turn off clearing of SHM on log out (`#152 <https://github.com/clearpathrobotics/clearpath_robot/issues/152>`_)
+* Turn off clearing of SHM on log out (`#152 <https://github.com/clearpathrobotics/clearpath_robot/issues/152>`_) (`#156 <https://github.com/clearpathrobotics/clearpath_robot/issues/156>`_)
   Previously the SHM links were being cleared out when all user sessions ended which was causing ROS communication to fail and the robot to stop working.
 * Contributors: Hilary Luo
 
-2.1.1 (2025-02-06)
+1.1.0 (2025-01-15)
 ------------------
-* VCAN fix for Lynx remote request issue (`#146 <https://github.com/clearpathrobotics/clearpath_robot/issues/146>`_)
-* Contributors: Roni Kreinin
-
-2.1.0 (2025-01-31)
-------------------
-* Check that user exists before installing (`#140 <https://github.com/clearpathrobotics/clearpath_robot/issues/140>`_)
-* Contributors: luis-camero
-
-2.0.4 (2025-01-22)
-------------------
-
-2.0.3 (2025-01-17)
-------------------
-
-2.0.2 (2025-01-17)
-------------------
-
-2.0.1 (2025-01-17)
-------------------
-
-2.0.0 (2025-01-17)
-------------------
-* [clearpath_robot] Fixed comment.
-* [clearpath_robot] Added check for binary install path and fallback to check from a workspace in generate. (`#127 <https://github.com/clearpathrobotics/clearpath_robot/issues/127>`_)
-* 1.1.0
-* Changes.
 * Add dependency for ewellix_driver (`#125 <https://github.com/clearpathrobotics/clearpath_robot/issues/125>`_)
   * Add dependency for ewellix_driver
   * Alphabetical dependencies
-* Add zenoh service files & generators (`#116 <https://github.com/clearpathrobotics/clearpath_robot/issues/116>`_)
-  * Add zenoh service files & generators
-* Remove udev rules for joy controllers (`#113 <https://github.com/clearpathrobotics/clearpath_robot/issues/113>`_)
-* A300 (`#106 <https://github.com/clearpathrobotics/clearpath_robot/issues/106>`_)
-  * Added lynx hardware interface
-  * Lynx motor driver
-  Rename clearpath_platform namespace to clearpath_hardware_interfaces
-  * Added A300 and Inventus battery to generator
-  * A300 lighting
-  * Dependencies and README
-  * Rename platform to hardware_interfaces in hardware.xml
-  * Fix append of bms in generator
-  * Removed wheel_joints\_ map
-  ---------
-  Co-authored-by: Luis Camero <lcamero@clearpathrobotics.com>
-* Make robot service always restart vcan
-* Add ur_robot_driver dependency
-* Add vcan to robot service wants
-* Change vcan service to use generated script
-* 0.3.2
-* Changes.
-* [clearpath_robot] Added script to grab diagnostic logs for troublesho… (`#84 <https://github.com/clearpathrobotics/clearpath_robot/issues/84>`_)
-  * [clearpath_robot] Added script to grab diagnostic logs for troubleshooting.
-  * Make grab-diagnostics script executable and installed
-  ---------
-  Co-authored-by: Luis Camero <lcamero@clearpathrobotics.com>
-* Remove missing jazzy dependencies (for now)
-* Socket CAN Bridges (`#93 <https://github.com/clearpathrobotics/clearpath_robot/issues/93>`_)
-  * Generate can bridges
-  * Generate script source robot workspace
-  * Remove extra line
-  ---------
-  Co-authored-by: Roni Kreinin <rkreinin@clearpathrobotics.com>
-* Contributors: Chris Iverach-Brereton, Luis Camero, Roni Kreinin, Tony Baltovski, luis-camero
+* Contributors: luis-camero
 
 1.0.1 (2024-11-28)
 ------------------
