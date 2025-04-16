@@ -36,7 +36,7 @@ import os
 from clearpath_config.common.types.platform import Platform
 from clearpath_config.manipulators.types.arms import UniversalRobots
 from clearpath_config.platform.battery import BatteryConfig
-from clearpath_generator_common.common import LaunchFile, Package
+from clearpath_generator_common.common import LaunchFile, Package, ParamFile
 from clearpath_generator_common.launch.generator import LaunchGenerator
 from clearpath_generator_common.launch.writer import LaunchWriter
 from clearpath_generator_robot.launch.sensors import SensorLaunch
@@ -46,6 +46,10 @@ class RobotLaunchGenerator(LaunchGenerator):
 
     def __init__(self, setup_path: str = '/etc/clearpath/') -> None:
         super().__init__(setup_path)
+
+        # Additional packages specific to physical robots
+        self.pkg_clearpath_sensors = Package('clearpath_sensors')
+        self.pkg_clearpath_hardware_interfaces = Package('clearpath_hardware_interfaces')
 
         # Filter for MCU IMU
         self.imu_0_filter_node = LaunchFile.Node(
@@ -127,11 +131,31 @@ class RobotLaunchGenerator(LaunchGenerator):
                     'connection_topic': 'platform/wifi_status',
                 }
             ],
+            remappings=[('/diagnostics', 'diagnostics'),],
         )
 
-        # Diagnostics
+        # Diagnostics launch args
+        self.diag_updater_params = LaunchFile.LaunchArg(
+            'diagnostic_updater_params',
+            default_value=os.path.join(self.platform_params_path, 'diagnostic_updater.yaml'),
+        )
+        self.diag_aggregator_params = LaunchFile.LaunchArg(
+            'diagnostic_aggregator_params',
+            default_value=os.path.join(self.platform_params_path, 'diagnostic_aggregator.yaml'),
+        )
+
+        self.diagnostic_args = [
+            ('namespace', self.namespace),
+            ('updater_parameters', LaunchFile.Variable('diagnostic_updater_params')),
+            ('aggregator_parameters', LaunchFile.Variable('diagnostic_aggregator_params')),
+        ]
+
+        # Diagnostics launch
         clearpath_diagnostics_package = Package('clearpath_diagnostics')
-        self.diagnostics_launch = LaunchFile('diagnostics', package=clearpath_diagnostics_package)
+        self.diagnostics_launch = LaunchFile(
+            'diagnostics',
+            package=clearpath_diagnostics_package,
+            args=self.diagnostic_args)
 
         # Battery state
         self.battery_state_estimator = LaunchFile.Node(
@@ -150,8 +174,11 @@ class RobotLaunchGenerator(LaunchGenerator):
             arguments=['-s', setup_path]
         )
 
-        # Valence BMS
+        # BMS
         self.bms_launch_file = None
+        self.bms_node = None
+
+        # Valence BMS
         if (self.clearpath_config.platform.battery.model in
                 [BatteryConfig.VALENCE_U24_12XP, BatteryConfig.VALENCE_U27_12XP]):
 
@@ -177,6 +204,55 @@ class RobotLaunchGenerator(LaunchGenerator):
                 package=Package('valence_bms_driver'),
                 args=bms_launch_args
                 )
+        # Inventus BMS
+        elif (self.clearpath_config.platform.battery.model in
+              [BatteryConfig.S_24V20_U1]):
+
+            launch_args = self.clearpath_config.platform.battery.launch_args
+
+            inventus_bmu_params_file = ParamFile(
+                'inventus_bmu',
+                package=self.pkg_clearpath_sensors)
+            inventus_bmu_params = inventus_bmu_params_file.full_path
+
+            module_ids = []
+
+            match(self.clearpath_config.platform.battery.configuration):
+                case BatteryConfig.S1P2:
+                    module_ids = [49, 50]
+                case BatteryConfig.S1P4:
+                    module_ids = [49, 50, 51, 52]
+                case BatteryConfig.S1P6:
+                    module_ids = [49, 50, 51, 52, 53, 54]
+
+            module_series = str([module_ids])
+
+            can_dev = 'vcan1'
+
+            if launch_args:
+                if 'params' in launch_args:
+                    inventus_bmu_params = launch_args['params']
+                if 'can_device' in launch_args:
+                    can_dev = launch_args['can_device']
+
+            self.bms_node = LaunchFile.Node(
+                name='inventus_bmu',
+                package='inventus_bmu',
+                executable='inventus_bmu_driver',
+                namespace=self.namespace,
+                parameters=[
+                    inventus_bmu_params,
+                    {'can_device': can_dev},
+                    {'module_ids': module_ids},
+                    {'module_series': module_series}
+                ],
+                remappings=[
+                    ('bms/battery_state', 'platform/bms/state'),
+                    ('modules', 'platform/bms/modules'),
+                    ('bms/soc', 'platform/bms/soc'),
+                    ('/diagnostics', 'diagnostics')
+                ]
+            )
 
         # Lighting
         self.lighting_node = LaunchFile.Node(
@@ -184,7 +260,8 @@ class RobotLaunchGenerator(LaunchGenerator):
           executable='lighting_node',
           name='lighting_node',
           namespace=self.namespace,
-          parameters=[{'platform': self.platform_model}]
+          parameters=[{'platform': self.platform_model}],
+          remappings=[('/diagnostics', 'diagnostics'),],
         )
 
         # Sevcon
@@ -193,6 +270,7 @@ class RobotLaunchGenerator(LaunchGenerator):
           executable='sevcon_traction_node',
           name='sevcon_traction_node',
           namespace=self.namespace,
+          remappings=[('/diagnostics', 'diagnostics')],
         )
 
         # Puma Multi-Drive Node
@@ -202,6 +280,17 @@ class RobotLaunchGenerator(LaunchGenerator):
           parameters=[os.path.join(self.platform_params_path, 'control.yaml')],
           name='puma_control',
           namespace=self.namespace,
+          remappings=[('/diagnostics', 'diagnostics')],
+        )
+
+        # BLDC Multi-Drive Node
+        self.lynx_node = LaunchFile.Node(
+          package='lynx_motor_driver',
+          executable='lynx_motor_driver',
+          parameters=[os.path.join(self.platform_params_path, 'control.yaml')],
+          name='lynx_control',
+          namespace=self.namespace,
+          remappings=[('/diagnostics', 'diagnostics'),],
         )
 
         # ROS2 socketcan bridges
@@ -209,7 +298,8 @@ class RobotLaunchGenerator(LaunchGenerator):
         self.can_bridges = []
         for can_bridge in self.clearpath_config.platform.can_bridges.get_all():
             self.can_bridges.append(LaunchFile(
-                'receiver',
+                f'{can_bridge.interface}_receiver',
+                filename='receiver',
                 package=ros2_socketcan_package,
                 args=[
                     ('namespace', self.namespace),
@@ -219,7 +309,8 @@ class RobotLaunchGenerator(LaunchGenerator):
             ))
 
             self.can_bridges.append(LaunchFile(
-                'sender',
+                f'{can_bridge.interface}_sender',
+                filename='sender',
                 package=ros2_socketcan_package,
                 args=[
                     ('namespace', self.namespace),
@@ -228,13 +319,27 @@ class RobotLaunchGenerator(LaunchGenerator):
                 ]
             ))
 
+        # A300 Fan Control Node
+        self.a300_fan_control = LaunchFile.Node(
+          package='clearpath_hardware_interfaces',
+          executable='fan_control_node',
+          name='a300_fan_control',
+          namespace=self.namespace,
+          remappings=[('/diagnostics', 'diagnostics')],
+        )
+
         # Components required for each platform
         common_platform_components = [
             self.wireless_watcher_node,
+            self.diag_updater_params,
+            self.diag_aggregator_params,
             self.diagnostics_launch,
-            self.battery_state_estimator,
-            self.battery_state_control
+            self.battery_state_control,
         ]
+
+        # Only add estimator when no BMS is present
+        if self.bms_launch_file is None and self.bms_node is None:
+            common_platform_components.append(self.battery_state_estimator)
 
         if len(self.can_bridges) > 0:
             common_platform_components.extend(self.can_bridges)
@@ -248,6 +353,13 @@ class RobotLaunchGenerator(LaunchGenerator):
                 self.nmea_driver_node
             ],
             Platform.A200: common_platform_components,
+            Platform.A300: common_platform_components + [
+                self.eth_uros_node,
+                self.configure_mcu,
+                self.lighting_node,
+                self.lynx_node,
+                self.a300_fan_control,
+            ],
             Platform.W200: common_platform_components + [
                 self.imu_0_filter_node,
                 self.imu_0_filter_config,
@@ -315,16 +427,6 @@ class RobotLaunchGenerator(LaunchGenerator):
                 # Include sensor launch in top level sensors launch file
                 sensors_service_launch_writer.add(sensor_launch.launch_file)
 
-        if self.clearpath_config.platform.extras.launch:
-            extra_launch = LaunchFile(
-                name=(os.path.basename(
-                    self.clearpath_config.platform.extras.launch['path']
-                )).split('.')[0],
-                path=os.path.dirname(self.clearpath_config.platform.extras.launch['path']),
-                package=Package(self.clearpath_config.platform.extras.launch['package']),
-            )
-            sensors_service_launch_writer.add(extra_launch)
-
         sensors_service_launch_writer.generate_file()
 
     def generate_platform(self) -> None:
@@ -337,7 +439,26 @@ class RobotLaunchGenerator(LaunchGenerator):
         if self.bms_launch_file:
             platform_service_launch_writer.add(self.bms_launch_file)
 
+        if self.bms_node:
+            platform_service_launch_writer.add(self.bms_node)
+
         platform_service_launch_writer.generate_file()
+
+        platform_extras_service_launch_writer = LaunchWriter(
+            self.platform_extras_service_launch_file)
+        platform_extras_service_launch_writer.add(self.platform_extras_launch_file)
+
+        if self.clearpath_config.platform.extras.launch:
+            extra_launch = LaunchFile(
+                name=(os.path.basename(
+                    self.clearpath_config.platform.extras.launch['path']
+                )).split('.')[0],
+                path=os.path.dirname(self.clearpath_config.platform.extras.launch['path']),
+                package=Package(self.clearpath_config.platform.extras.launch['package']),
+            )
+            platform_extras_service_launch_writer.add(extra_launch)
+
+        platform_extras_service_launch_writer.generate_file()
 
     def generate_manipulators(self) -> None:
         manipulator_service_launch_writer = LaunchWriter(self.manipulators_service_launch_file)
