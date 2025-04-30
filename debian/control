@@ -1,0 +1,12 @@
+Source: ros-jazzy-clearpath-diagnostics
+Section: misc
+Priority: optional
+Maintainer: Hilary Luo <hluo@clearpathrobotics.com>
+Build-Depends: debhelper (>= 9.0.0), ros-jazzy-ament-cmake, ros-jazzy-ament-lint-auto <!nocheck>, ros-jazzy-ament-lint-common <!nocheck>, ros-jazzy-clearpath-platform-msgs (>= 2.4.0), ros-jazzy-diagnostic-updater, ros-jazzy-rclcpp, ros-jazzy-sensor-msgs, ros-jazzy-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-jazzy-clearpath-diagnostics
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-jazzy-clearpath-platform-msgs (>= 2.4.0), ros-jazzy-diagnostic-aggregator, ros-jazzy-diagnostic-updater, ros-jazzy-rclcpp, ros-jazzy-ros2launch, ros-jazzy-sensor-msgs, ros-jazzy-ros-workspace
+Description: Clearpath Robot Diagnostics Monitor
