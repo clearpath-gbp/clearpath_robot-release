@@ -124,7 +124,7 @@ double Driver::radPerSecToRpm() const
 void Driver::sendId(const uint32_t id)
 {
   can_msgs::msg::Frame msg = getMsg(id);
-  interface_->send(msg);
+  interface_->queue(msg);
 }
 
 void Driver::sendUint8(const uint32_t id, const uint8_t value)
@@ -135,7 +135,7 @@ void Driver::sendUint8(const uint32_t id, const uint8_t value)
   std::memcpy(data, &value, sizeof(uint8_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->send(msg);
+  interface_->queue(msg);
 }
 
 void Driver::sendUint16(const uint32_t id, const uint16_t value)
@@ -146,7 +146,7 @@ void Driver::sendUint16(const uint32_t id, const uint16_t value)
   std::memcpy(data, &value, sizeof(uint16_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->send(msg);
+  interface_->queue(msg);
 }
 
 void Driver::sendFixed8x8(const uint32_t id, const float value)
@@ -159,7 +159,7 @@ void Driver::sendFixed8x8(const uint32_t id, const float value)
   std::memcpy(data, &output_value, sizeof(int16_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->send(msg);
+  interface_->queue(msg);
 }
 
 void Driver::sendFixed16x16(const uint32_t id, const double value)
@@ -172,7 +172,7 @@ void Driver::sendFixed16x16(const uint32_t id, const double value)
   std::memcpy(data, &output_value, sizeof(int32_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->send(msg);
+  interface_->queue(msg);
 }
 
 can_msgs::msg::Frame Driver::getMsg(const uint32_t id)
@@ -409,9 +409,7 @@ void Driver::configureParams()
     case ConfigurationState::Initializing:
       break;
     case ConfigurationState::PowerFlag:
-      // Continue to check last power flag until it has been cleared
       if (lastPower() == 1) {
-        // Send request every second
         if ((now - last_power_clear_ts_) > 1.0) {
           sendUint8((LM_API_STATUS_POWER | device_number_), 1);
           last_power_clear_ts_ = now;

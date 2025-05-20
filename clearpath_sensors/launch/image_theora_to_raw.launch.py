@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
 # Software License Agreement (BSD)
 #
-# @author    Chris Iverach-Brereton <civerachb@clearpathrobotics.com>
-# @copyright (c) 2025, Clearpath Robotics, Inc., All rights reserved.
+# @author    Roni Kreinin <rkreinin@clearpathrobotics.com>
+# @copyright (c) 2023, Clearpath Robotics, Inc., All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -26,53 +25,47 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-
-from clearpath_config.clearpath_config import ClearpathConfig
-from clearpath_config.common.utils.yaml import read_yaml
-
 from launch import LaunchDescription
-from launch.actions import (
-    DeclareLaunchArgument,
-    OpaqueFunction,
-)
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-
-ARGUMENTS = [
-    DeclareLaunchArgument(
-        'setup_path',
-        default_value='/etc/clearpath/',
-        description='Clearpath setup path',
-    )
-]
-
-
-def launch_setup(context, *args, **kwargs):
-    setup_path = LaunchConfiguration('setup_path')
-
-    robot_yaml = PathJoinSubstitution(
-        [setup_path, 'robot.yaml']
-    )
-
-    # Read robot YAML
-    config = read_yaml(robot_yaml.perform(context))
-    # Parse robot YAML into config
-    clearpath_config = ClearpathConfig(config)
-
-    namespace = clearpath_config.system.namespace
-    test_node = Node(
-        namespace=namespace,
-        package='clearpath_tests',
-        executable='all_tests',
-        output='screen',
-        emulate_tty=True,
-    )
-
-    return [test_node]
 
 
 def generate_launch_description():
-    ld = LaunchDescription(ARGUMENTS)
-    ld.add_action(OpaqueFunction(function=launch_setup))
+    namespace = LaunchConfiguration('namespace')
+    in_theora = LaunchConfiguration('in_theora')
+    out_raw = LaunchConfiguration('out_raw')
+
+    arg_namespace = DeclareLaunchArgument(
+        'namespace',
+        default_value=''
+    )
+
+    arg_in_theora = DeclareLaunchArgument(
+        'in_theora',
+        default_value='theora'
+    )
+
+    arg_out_raw = DeclareLaunchArgument(
+        'out_raw',
+        default_value='image'
+    )
+
+    theora_transport_node = Node(
+        name='image_theora_to_raw',
+        namespace=namespace,
+        package='image_transport',
+        executable='republish',
+        remappings=[
+            ('in/theora', in_theora),
+            ('out', out_raw),
+        ],
+        arguments=['theora', 'raw'],
+    )
+
+    ld = LaunchDescription()
+    ld.add_action(arg_namespace)
+    ld.add_action(arg_in_theora)
+    ld.add_action(arg_out_raw)
+    ld.add_action(theora_transport_node)
     return ld

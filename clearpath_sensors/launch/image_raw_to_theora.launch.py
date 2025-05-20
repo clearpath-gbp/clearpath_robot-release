@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
 # Software License Agreement (BSD)
 #
-# @author    Chris Iverach-Brereton <civerachb@clearpathrobotics.com>
-# @copyright (c) 2025, Clearpath Robotics, Inc., All rights reserved.
+# @author    Roni Kreinin <rkreinin@clearpathrobotics.com>
+# @copyright (c) 2023, Clearpath Robotics, Inc., All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -26,35 +25,47 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-from glob import glob
-import os
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
 
-from setuptools import find_packages, setup
 
-package_name = 'clearpath_tests'
+def generate_launch_description():
+    namespace = LaunchConfiguration('namespace')
+    in_raw = LaunchConfiguration('in_raw')
+    out_theora = LaunchConfiguration('out_theora')
 
-setup(
-    name=package_name,
-    version='2.4.1',
-    packages=find_packages(exclude=['test']),
-    data_files=[
-        ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
-        (os.path.join('share', package_name), ['package.xml']),
-        (os.path.join('share', package_name, 'launch'), glob(
-            os.path.join('launch', '*.launch.py'))),
-        (os.path.join('share', package_name, 'config'), glob(os.path.join('config', '*.yaml'))),
-    ],
-    install_requires=['setuptools'],
-    zip_safe=True,
-    maintainer='Chris Iverach-Brereton',
-    maintainer_email='civerachb@clearpathrobotics.com',
-    description='Testing scripts for Clearpath robots',
-    license='BSD',
-    tests_require=['pytest'],
-    entry_points={
-        'console_scripts': [
-            'all_tests = clearpath_tests.all_tests:main',
+    arg_namespace = DeclareLaunchArgument(
+        'namespace',
+        default_value=''
+    )
+
+    arg_in_raw = DeclareLaunchArgument(
+        'in_raw',
+        default_value='image'
+    )
+
+    arg_out_theora = DeclareLaunchArgument(
+        'out_theora',
+        default_value='theora'
+    )
+
+    theora_transport_node = Node(
+        name='image_raw_to_theora',
+        namespace=namespace,
+        package='image_transport',
+        executable='republish',
+        remappings=[
+            ('in', in_raw),
+            ('out/theora', out_theora),
         ],
-    },
-)
+        arguments=['raw', 'theora'],
+    )
+
+    ld = LaunchDescription()
+    ld.add_action(arg_namespace)
+    ld.add_action(arg_in_raw)
+    ld.add_action(arg_out_theora)
+    ld.add_action(theora_transport_node)
+    return ld

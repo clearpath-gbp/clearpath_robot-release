@@ -16,11 +16,10 @@ find_package(ament_cmake_python REQUIRED)
 find_package(controller_interface REQUIRED)
 find_package(controller_manager REQUIRED)
 find_package(controller_manager_msgs REQUIRED)
-find_package(clearpath_motor_msgs REQUIRED)
 find_package(clearpath_platform_msgs REQUIRED)
-find_package(diagnostic_updater REQUIRED)
 find_package(hardware_interface REQUIRED)
 find_package(pluginlib REQUIRED)
+find_package(clearpath_motor_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 
 find_package(geometry_msgs REQUIRED)
@@ -38,11 +37,9 @@ find_package(tf2_ros REQUIRED)
 set(LIGHTING_EXECUTABLE lighting_node)
 set(LIGHTING_LIB clearpath_platform_lighting)
 set(LIGHTING_DEPENDENCIES
-  clearpath_motor_msgs
-  clearpath_platform_msgs
-  diagnostic_updater
-  sensor_msgs
-  rclcpp
+    clearpath_platform_msgs
+    sensor_msgs
+    rclcpp
 )
 
 add_library(
@@ -70,66 +67,6 @@ target_include_directories(
   PRIVATE
   include
 )
-
-# Cooling
-set(FAN_CONTROL_EXECUTABLE fan_control_node)
-set(FAN_CONTROL_DEPENDENCIES
-  clearpath_motor_msgs
-  clearpath_platform_msgs
-  diagnostic_updater
-  sensor_msgs
-  rclcpp
-)
-
-add_executable(${FAN_CONTROL_EXECUTABLE} src/a300/fan_control.cpp)
-
-target_include_directories(
-  ${FAN_CONTROL_EXECUTABLE}
-  PRIVATE
-  include
-)
-
-target_link_libraries(${FAN_CONTROL_EXECUTABLE})
-ament_target_dependencies(${FAN_CONTROL_EXECUTABLE} ${FAN_CONTROL_DEPENDENCIES})
-
-# Pinout
-set(PINOUT_CONTROL_EXECUTABLE pinout_control_node)
-set(PINOUT_CONTROL_DEPENDENCIES
-  clearpath_platform_msgs
-  std_msgs
-  std_srvs
-  rclcpp
-)
-
-add_executable(${PINOUT_CONTROL_EXECUTABLE} src/pinout/pinout_control.cpp)
-
-target_include_directories(
-  ${PINOUT_CONTROL_EXECUTABLE}
-  PRIVATE
-  include
-)
-
-target_link_libraries(${PINOUT_CONTROL_EXECUTABLE})
-ament_target_dependencies(${PINOUT_CONTROL_EXECUTABLE} ${PINOUT_CONTROL_DEPENDENCIES})
-
-# SW LVC
-set(SW_LVC_EXECUTABLE sw_lvc_node)
-set(SW_LVC_DEPENDENCIES
-  sensor_msgs
-  std_srvs
-  rclcpp
-)
-
-add_executable(${SW_LVC_EXECUTABLE} src/a300/software_lvc.cpp)
-
-target_include_directories(
-  ${SW_LVC_EXECUTABLE}
-  PRIVATE
-  include
-)
-
-target_link_libraries(${SW_LVC_EXECUTABLE})
-ament_target_dependencies(${SW_LVC_EXECUTABLE} ${SW_LVC_DEPENDENCIES})
 
 # A200 Hardware
 add_library(
@@ -233,34 +170,10 @@ ament_target_dependencies(
   rclcpp
 )
 
-# Lynx Hardware
-add_library(
-  lynx_hardware
-  SHARED
-  src/lynx/hardware.cpp
-  src/lynx/hardware_interface.cpp
-)
-
-target_include_directories(
-  lynx_hardware
-  PRIVATE
-  include
-)
-
-ament_target_dependencies(
-  lynx_hardware
-  clearpath_motor_msgs
-  clearpath_platform_msgs
-  hardware_interface
-  pluginlib
-  rclcpp
-)
-
 pluginlib_export_plugin_description_file(hardware_interface src/a200/hardware.xml)
 pluginlib_export_plugin_description_file(hardware_interface src/j100/hardware.xml)
 pluginlib_export_plugin_description_file(hardware_interface src/w200/hardware.xml)
 pluginlib_export_plugin_description_file(hardware_interface src/puma/hardware.xml)
-pluginlib_export_plugin_description_file(hardware_interface src/lynx/hardware.xml)
 
 # INSTALL
 install(
@@ -268,12 +181,8 @@ install(
           j100_hardware
           w200_hardware
           puma_hardware
-          lynx_hardware
-          ${FAN_CONTROL_EXECUTABLE}
-          ${PINOUT_CONTROL_EXECUTABLE}
           ${LIGHTING_EXECUTABLE}
           ${LIGHTING_LIB}
-          ${SW_LVC_EXECUTABLE}
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
@@ -299,7 +208,6 @@ ament_export_libraries(
   j100_hardware
   w200_hardware
   puma_hardware
-  lynx_hardware
   ${LIGHTING_LIB}
 )
 ament_export_dependencies(
