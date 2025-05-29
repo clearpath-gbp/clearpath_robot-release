@@ -47,6 +47,10 @@ class RobotLaunchGenerator(LaunchGenerator):
     def __init__(self, setup_path: str = '/etc/clearpath/') -> None:
         super().__init__(setup_path)
 
+        # Additional packages specific to physical robots
+        self.pkg_clearpath_sensors = Package('clearpath_sensors')
+        self.pkg_clearpath_hardware_interfaces = Package('clearpath_hardware_interfaces')
+
         # Filter for MCU IMU
         self.imu_0_filter_node = LaunchFile.Node(
             package='imu_filter_madgwick',
@@ -127,11 +131,51 @@ class RobotLaunchGenerator(LaunchGenerator):
                     'connection_topic': 'platform/wifi_status',
                 }
             ],
+            remappings=[('/diagnostics', 'diagnostics'),],
         )
 
-        # Diagnostics
+        # Diagnostics launch args
+        self.diag_updater_params = LaunchFile.LaunchArg(
+            'diagnostic_updater_params',
+            default_value=os.path.join(self.platform_params_path, 'diagnostic_updater.yaml'),
+        )
+        self.diag_aggregator_params = LaunchFile.LaunchArg(
+            'diagnostic_aggregator_params',
+            default_value=os.path.join(self.platform_params_path, 'diagnostic_aggregator.yaml'),
+        )
+
+        self.diagnostic_args = [
+            ('namespace', self.namespace),
+            ('updater_parameters', LaunchFile.Variable('diagnostic_updater_params')),
+            ('aggregator_parameters', LaunchFile.Variable('diagnostic_aggregator_params')),
+        ]
+
+        # Diagnostics launch
         clearpath_diagnostics_package = Package('clearpath_diagnostics')
-        self.diagnostics_launch = LaunchFile('diagnostics', package=clearpath_diagnostics_package)
+        self.diagnostics_launch = LaunchFile(
+            'diagnostics',
+            package=clearpath_diagnostics_package,
+            args=self.diagnostic_args)
+
+        # Foxglove bridge
+        self.foxglove_bridge_params = LaunchFile.LaunchArg(
+            'foxglove_bridge_parameters',
+            default_value=os.path.join(
+                self.platform_params_path,
+                'foxglove_bridge.yaml')
+        )
+
+        self.foxglove_bridge_args = [
+            ('namespace', self.namespace),
+            ('parameters', LaunchFile.Variable(
+                'foxglove_bridge_parameters'))
+        ]
+
+        self.foxglove_bridge_launch = LaunchFile(
+            'foxglove_bridge',
+            package=clearpath_diagnostics_package,
+            args=self.foxglove_bridge_args
+        )
 
         # Battery state
         self.battery_state_estimator = LaunchFile.Node(
@@ -150,8 +194,11 @@ class RobotLaunchGenerator(LaunchGenerator):
             arguments=['-s', setup_path]
         )
 
-        # Valence BMS
+        # BMS
         self.bms_launch_file = None
+        self.bms_node = None
+
+        # Valence BMS
         if (self.clearpath_config.platform.battery.model in
                 [BatteryConfig.VALENCE_U24_12XP, BatteryConfig.VALENCE_U27_12XP]):
 
@@ -177,6 +224,47 @@ class RobotLaunchGenerator(LaunchGenerator):
                 package=Package('valence_bms_driver'),
                 args=bms_launch_args
                 )
+        # Inventus BMS
+        elif (self.clearpath_config.platform.battery.model in
+              [BatteryConfig.S_24V20_U1]):
+
+            launch_args = self.clearpath_config.platform.battery.launch_args
+
+            battery_count = 1
+
+            match(self.clearpath_config.platform.battery.configuration):
+                case BatteryConfig.S1P2:
+                    battery_count = 2
+                case BatteryConfig.S1P4:
+                    battery_count = 4
+                case BatteryConfig.S1P6:
+                    battery_count = 6
+
+            inventus_launch_args = [
+                    ('namespace', f'{self.namespace}/platform/bms'),
+                    ('interface', 'vcan1'),
+                    ('battery_count', str(battery_count)),
+                    ('master_id', '49'),
+                    ('battery_0_id', '49'),
+                    ('battery_1_id', '50'),
+                    ('battery_2_id', '51'),
+                    ('battery_3_id', '52'),
+                    ('battery_4_id', '53'),
+                    ('battery_5_id', '54'),
+            ]
+
+            for i in range(len(inventus_launch_args)):
+                key = inventus_launch_args[i][0]
+                if key in launch_args:
+                    val = launch_args[key]
+                    inventus_launch_args[i] = (key, str(val))
+
+            self.bms_node = LaunchFile(
+                'canopen_inventus',
+                filename='inventus',
+                package=Package('canopen_inventus_bringup'),
+                args=inventus_launch_args
+            )
 
         # Lighting
         self.lighting_node = LaunchFile.Node(
@@ -184,7 +272,17 @@ class RobotLaunchGenerator(LaunchGenerator):
           executable='lighting_node',
           name='lighting_node',
           namespace=self.namespace,
-          parameters=[{'platform': self.platform_model}]
+          parameters=[{'platform': self.platform_model}],
+          remappings=[('/diagnostics', 'diagnostics'),],
+        )
+
+        # Pinout
+        self.pinout_node = LaunchFile.Node(
+          package='clearpath_hardware_interfaces',
+          executable='pinout_control_node',
+          name='pinout_control_node',
+          namespace=self.namespace,
+          parameters=[{'platform': self.platform_model}],
         )
 
         # Sevcon
@@ -193,6 +291,7 @@ class RobotLaunchGenerator(LaunchGenerator):
           executable='sevcon_traction_node',
           name='sevcon_traction_node',
           namespace=self.namespace,
+          remappings=[('/diagnostics', 'diagnostics')],
         )
 
         # Puma Multi-Drive Node
@@ -202,6 +301,17 @@ class RobotLaunchGenerator(LaunchGenerator):
           parameters=[os.path.join(self.platform_params_path, 'control.yaml')],
           name='puma_control',
           namespace=self.namespace,
+          remappings=[('/diagnostics', 'diagnostics')],
+        )
+
+        # BLDC Multi-Drive Node
+        self.lynx_node = LaunchFile.Node(
+          package='lynx_motor_driver',
+          executable='lynx_motor_driver',
+          parameters=[os.path.join(self.platform_params_path, 'control.yaml')],
+          name='lynx_control',
+          namespace=self.namespace,
+          remappings=[('/diagnostics', 'diagnostics'),],
         )
 
         # ROS2 socketcan bridges
@@ -209,32 +319,76 @@ class RobotLaunchGenerator(LaunchGenerator):
         self.can_bridges = []
         for can_bridge in self.clearpath_config.platform.can_bridges.get_all():
             self.can_bridges.append(LaunchFile(
-                'receiver',
+                f'{can_bridge.interface}_receiver',
+                filename='receiver',
                 package=ros2_socketcan_package,
                 args=[
                     ('namespace', self.namespace),
                     ('interface', can_bridge.interface),
                     ('from_can_bus_topic', can_bridge.topic_rx),
+                    ('enable_can_fd', str(can_bridge.enaled_can_fd).lower()),
+                    ('interval_sec', str(can_bridge.interval)),
+                    ('use_bus_time', str(can_bridge.use_bus_time).lower()),
+                    ('filters', str(can_bridge.filters)),
+                    ('auto_configure', str(can_bridge.auto_configure).lower()),
+                    ('auto_activate', str(can_bridge.auto_activate).lower()),
+                    ('timeout', str(can_bridge.timeout)),
+                    ('transition_attempts', str(can_bridge.transition_attempts)),
                 ]
             ))
 
             self.can_bridges.append(LaunchFile(
-                'sender',
+                f'{can_bridge.interface}_sender',
+                filename='sender',
                 package=ros2_socketcan_package,
                 args=[
                     ('namespace', self.namespace),
                     ('interface', can_bridge.interface),
                     ('to_can_bus_topic', can_bridge.topic_tx),
+                    ('enable_can_fd', str(can_bridge.enaled_can_fd).lower()),
+                    ('interval_sec', str(can_bridge.interval)),
+                    ('auto_configure', str(can_bridge.auto_configure).lower()),
+                    ('auto_activate', str(can_bridge.auto_activate).lower()),
+                    ('timeout', str(can_bridge.timeout)),
+                    ('transition_attempts', str(can_bridge.transition_attempts)),
                 ]
             ))
 
+        # A300 Fan Control Node
+        self.a300_fan_control = LaunchFile.Node(
+          package='clearpath_hardware_interfaces',
+          executable='fan_control_node',
+          name='a300_fan_control',
+          namespace=self.namespace,
+          remappings=[('/diagnostics', 'diagnostics')],
+        )
+
+        # A300 SW Low SOC cutoff Node
+        self.a300_sw_low_soc_cutoff = LaunchFile.Node(
+          package='clearpath_hardware_interfaces',
+          executable='sw_low_soc_cutoff_node',
+          name='a300_sw_low_soc_cutoff',
+          namespace=self.namespace,
+        )
+
         # Components required for each platform
         common_platform_components = [
-            self.wireless_watcher_node,
+            self.diag_updater_params,
+            self.diag_aggregator_params,
             self.diagnostics_launch,
-            self.battery_state_estimator,
-            self.battery_state_control
+            self.battery_state_control,
         ]
+
+        if self.clearpath_config.platform.enable_foxglove_bridge:
+            common_platform_components.append(self.foxglove_bridge_params)
+            common_platform_components.append(self.foxglove_bridge_launch)
+
+        # Only add estimator when no BMS is present
+        if self.bms_launch_file is None and self.bms_node is None:
+            common_platform_components.append(self.battery_state_estimator)
+
+        if self.clearpath_config.platform.enable_wireless_watcher:
+            common_platform_components.append(self.wireless_watcher_node)
 
         if len(self.can_bridges) > 0:
             common_platform_components.extend(self.can_bridges)
@@ -248,6 +402,15 @@ class RobotLaunchGenerator(LaunchGenerator):
                 self.nmea_driver_node
             ],
             Platform.A200: common_platform_components,
+            Platform.A300: common_platform_components + [
+                self.eth_uros_node,
+                self.configure_mcu,
+                self.lighting_node,
+                self.lynx_node,
+                self.a300_fan_control,
+                self.a300_sw_low_soc_cutoff,
+                self.pinout_node,
+            ],
             Platform.W200: common_platform_components + [
                 self.imu_0_filter_node,
                 self.imu_0_filter_config,
@@ -263,6 +426,7 @@ class RobotLaunchGenerator(LaunchGenerator):
                 self.configure_mcu,
                 self.lighting_node,
                 self.puma_node,
+                self.pinout_node,
             ],
             Platform.DO100: common_platform_components + [
                 self.imu_0_filter_node,
@@ -271,6 +435,7 @@ class RobotLaunchGenerator(LaunchGenerator):
                 self.configure_mcu,
                 self.lighting_node,
                 self.puma_node,
+                self.pinout_node,
             ],
             Platform.DD150: common_platform_components + [
                 self.imu_0_filter_node,
@@ -279,6 +444,7 @@ class RobotLaunchGenerator(LaunchGenerator):
                 self.configure_mcu,
                 self.lighting_node,
                 self.puma_node,
+                self.pinout_node,
             ],
             Platform.DO150: common_platform_components + [
                 self.imu_0_filter_node,
@@ -287,6 +453,7 @@ class RobotLaunchGenerator(LaunchGenerator):
                 self.configure_mcu,
                 self.lighting_node,
                 self.puma_node,
+                self.pinout_node,
             ],
             Platform.R100: common_platform_components + [
                 self.imu_0_filter_node,
@@ -315,16 +482,6 @@ class RobotLaunchGenerator(LaunchGenerator):
                 # Include sensor launch in top level sensors launch file
                 sensors_service_launch_writer.add(sensor_launch.launch_file)
 
-        if self.clearpath_config.platform.extras.launch:
-            extra_launch = LaunchFile(
-                name=(os.path.basename(
-                    self.clearpath_config.platform.extras.launch['path']
-                )).split('.')[0],
-                path=os.path.dirname(self.clearpath_config.platform.extras.launch['path']),
-                package=Package(self.clearpath_config.platform.extras.launch['package']),
-            )
-            sensors_service_launch_writer.add(extra_launch)
-
         sensors_service_launch_writer.generate_file()
 
     def generate_platform(self) -> None:
@@ -337,7 +494,26 @@ class RobotLaunchGenerator(LaunchGenerator):
         if self.bms_launch_file:
             platform_service_launch_writer.add(self.bms_launch_file)
 
+        if self.bms_node:
+            platform_service_launch_writer.add(self.bms_node)
+
         platform_service_launch_writer.generate_file()
+
+        platform_extras_service_launch_writer = LaunchWriter(
+            self.platform_extras_service_launch_file)
+        platform_extras_service_launch_writer.add(self.platform_extras_launch_file)
+
+        if self.clearpath_config.platform.extras.launch:
+            extra_launch = LaunchFile(
+                name=(os.path.basename(
+                    self.clearpath_config.platform.extras.launch['path']
+                )).split('.')[0],
+                path=os.path.dirname(self.clearpath_config.platform.extras.launch['path']),
+                package=Package(self.clearpath_config.platform.extras.launch['package']),
+            )
+            platform_extras_service_launch_writer.add(extra_launch)
+
+        platform_extras_service_launch_writer.generate_file()
 
     def generate_manipulators(self) -> None:
         manipulator_service_launch_writer = LaunchWriter(self.manipulators_service_launch_file)
