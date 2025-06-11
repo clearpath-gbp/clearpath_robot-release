@@ -2,6 +2,9 @@
 Changelog for package clearpath_sensors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.2 (2025-06-11)
+------------------
+
 1.3.1 (2025-05-20)
 ------------------
 * Fix: Stereolabs Zed launch file (`#208 <https://github.com/clearpathrobotics/clearpath_robot/issues/208>`_)
