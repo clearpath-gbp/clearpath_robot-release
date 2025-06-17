@@ -29,8 +29,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 
-from launch_ros.actions import ComposableNodeContainer
-from launch_ros.descriptions import ComposableNode
+from launch_ros.actions import ComposableNodeContainer, Node
 from launch_ros.substitutions import FindPackageShare
 
 HIDDEN = [
@@ -149,13 +148,14 @@ def generate_launch_description():
     remappings.append(('/tf', PathJoinSubstitution(['/', robot_namespace, 'tf'])))
     remappings.append(('/tf_static', PathJoinSubstitution(['/', robot_namespace, 'tf_static'])))
 
-    stereolabs_zed_node = ComposableNode(
-        package='zed_components',
+    stereolabs_zed_node = Node(
+        package='zed_wrapper',
         namespace=namespace,
-        plugin='stereolabs::ZedCamera',
+        executable='zed_wrapper',
         name='stereolabs_zed',
+        output='screen',
         parameters=[parameters],
-        remappings=remappings
+        remappings=remappings,
     )
 
     image_processing_container = ComposableNodeContainer(
@@ -163,14 +163,14 @@ def generate_launch_description():
         namespace=namespace,
         package='rclcpp_components',
         executable='component_container',
-        composable_node_descriptions=[stereolabs_zed_node],
-        output='screen',
-        remappings=remappings
+        composable_node_descriptions=[],
+        output='screen'
     )
 
     ld = LaunchDescription()
     ld.add_action(arg_parameters)
     ld.add_action(arg_namespace)
     ld.add_action(arg_robot_namespace)
+    ld.add_action(stereolabs_zed_node)
     ld.add_action(image_processing_container)
     return ld
