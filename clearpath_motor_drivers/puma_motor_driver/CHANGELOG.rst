@@ -2,33 +2,86 @@
 Changelog for package puma_motor_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.3.3 (2025-07-03)
+1.1.0 (2025-01-15)
 ------------------
 
-1.3.2 (2025-06-11)
+2.6.0 (2025-07-04)
 ------------------
 
-1.3.1 (2025-05-20)
+2.5.1 (2025-06-17)
 ------------------
 
-1.3.0 (2025-04-15)
+2.5.0 (2025-05-29)
 ------------------
 
-1.2.0 (2025-03-14)
+2.4.1 (2025-05-20)
 ------------------
 
-1.1.2 (2025-03-11)
+2.4.0 (2025-04-30)
 ------------------
-* Fix: Robust puma initialization
-* Contributors: Stephen Phillips, Tony Baltovski
 
-1.1.1 (2025-03-05)
+2.3.3 (2025-04-17)
 ------------------
+
+2.3.2 (2025-04-16)
+------------------
+* Fixed depend version.
+* Contributors: Tony Baltovski
+
+2.3.1 (2025-04-14)
+------------------
+
+2.3.0 (2025-04-11)
+------------------
+* Reduced feedback frequency to 20hz (`#195 <https://github.com/clearpathrobotics/clearpath_robot/issues/195>`_)
+* Jazzy dingo and ridgeback fixes (`#169 <https://github.com/clearpathrobotics/clearpath_robot/issues/169>`_)
+* Contributors: Roni Kreinin
+
+2.2.4 (2025-04-07)
+------------------
+
+2.2.3 (2025-03-20)
+------------------
+
+2.2.2 (2025-03-17)
+------------------
+
+2.2.1 (2025-03-12)
+------------------
+
+2.2.0 (2025-03-11)
+------------------
+* [clearpath_motor_drivers/puma_motor_driver] Linting fix.
 * [clearpath_motor_drivers/puma_motor_driver] Fixed copy size.
 * Contributors: Tony Baltovski
 
-1.1.0 (2025-01-15)
+2.1.2 (2025-02-28)
 ------------------
+
+2.1.1 (2025-02-06)
+------------------
+
+2.1.0 (2025-01-31)
+------------------
+
+2.0.4 (2025-01-22)
+------------------
+
+2.0.3 (2025-01-17)
+------------------
+
+2.0.2 (2025-01-17)
+------------------
+
+2.0.1 (2025-01-17)
+------------------
+
+2.0.0 (2025-01-17)
+------------------
+* 1.1.0
+* Changes.
+* Add clearpath_motor_drivers, puma_motor_driver
+* Contributors: Luis Camero, Tony Baltovski
 
 1.0.1 (2024-11-28)
 ------------------
