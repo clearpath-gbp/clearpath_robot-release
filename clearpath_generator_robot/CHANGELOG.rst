@@ -1,6 +1,9 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package clearpath_generator_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1.3.3 (2025-07-03)
+------------------
+
 1.3.2 (2025-06-11)
 ------------------
 * Fix/Feature: Valence Battery Update/Fix (`#227 <https://github.com/clearpathrobotics/clearpath_robot/issues/227>`_)
