@@ -2,6 +2,9 @@
 Changelog for package clearpath_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.6.1 (2025-07-04)
+------------------
+
 2.6.0 (2025-07-04)
 ------------------
 * [clearpath_robot] Updated grab-diagnostics to latest. (`#231 <https://github.com/clearpathrobotics/clearpath_robot/issues/231>`_)
