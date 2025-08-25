@@ -1,0 +1,12 @@
+Source: ros-jazzy-clearpath-tests
+Section: misc
+Priority: optional
+Maintainer: Tony Baltovski <tbaltovski@clearpathrobotics.com>
+Build-Depends: debhelper (>= 9.0.0), ros-jazzy-ament-lint-auto <!nocheck>, ros-jazzy-ament-lint-common <!nocheck>, ros-jazzy-ros-workspace, python3-all, python3-setuptools, dh-python
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-jazzy-clearpath-tests
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, can-utils, ros-jazzy-clearpath-config, ros-jazzy-clearpath-generator-common, ros-jazzy-clearpath-motor-msgs, ros-jazzy-clearpath-platform-msgs, ros-jazzy-diagnostic-msgs, ros-jazzy-geometry-msgs, ros-jazzy-nav-msgs, ros-jazzy-rclpy, ros-jazzy-sensor-msgs, ros-jazzy-simple-term-menu-vendor, ros-jazzy-std-msgs, ros-jazzy-tf-transformations, ros-jazzy-tf2-geometry-msgs, ros-jazzy-tf2-msgs, ros-jazzy-wireless-msgs, stress, ros-jazzy-ros-workspace
+Description: Clearpath Tests
