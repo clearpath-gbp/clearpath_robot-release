@@ -2,6 +2,11 @@
 Changelog for package clearpath_generator_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.8.3 (2025-11-10)
+------------------
+* Remove second check to add battery estimator (`#279 <https://github.com/clearpathrobotics/clearpath_robot/issues/279>`_)
+* Contributors: luis-camero
+
 2.8.2 (2025-10-28)
 ------------------
 * Fix/Feature: Valence Battery Update/Fix (`#278 <https://github.com/clearpathrobotics/clearpath_robot/issues/278>`_)
