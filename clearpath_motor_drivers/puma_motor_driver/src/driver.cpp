@@ -31,9 +31,6 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <math.h>
 #include "rclcpp/rclcpp.hpp"
 
-// must match firmware
-#define CAN_FEEDBACK_RATE 40.0
-
 namespace puma_motor_driver
 {
 
@@ -77,15 +74,6 @@ Driver::Driver(
   encoder_cpr_(1),
   gear_ratio_(1)
 {
-  can_feedback_rate_ = std::make_shared<double>(CAN_FEEDBACK_RATE);
-  can_feedback_freq_status_ = std::make_shared<diagnostic_updater::FrequencyStatus>(
-    diagnostic_updater::FrequencyStatusParam(
-      can_feedback_rate_.get(),
-      can_feedback_rate_.get(),
-      0.1,
-      5
-    )
-  );
 }
 
 void Driver::processMessage(const can_msgs::msg::Frame::SharedPtr received_msg)
@@ -108,19 +96,14 @@ void Driver::processMessage(const can_msgs::msg::Frame::SharedPtr received_msg)
     field = statusFieldForMessage(received_api);
   } else if ((received_api & CAN_MSGID_API_M & CAN_API_MC_ICTRL) == CAN_API_MC_ICTRL) {
     field = ictrlFieldForMessage(received_api);
-    can_feedback_freq_status_->tick();
   } else if ((received_api & CAN_MSGID_API_M & CAN_API_MC_POS) == CAN_API_MC_POS) {
     field = posFieldForMessage(received_api);
-    can_feedback_freq_status_->tick();
   } else if ((received_api & CAN_MSGID_API_M & CAN_API_MC_VCOMP) == CAN_API_MC_VCOMP) {
     field = vcompFieldForMessage(received_api);
-    can_feedback_freq_status_->tick();
   } else if ((received_api & CAN_MSGID_API_M & CAN_API_MC_SPD) == CAN_API_MC_SPD) {
     field = spdFieldForMessage(received_api);
-    can_feedback_freq_status_->tick();
   } else if ((received_api & CAN_MSGID_API_M & CAN_API_MC_VOLTAGE) == CAN_API_MC_VOLTAGE) {
     field = voltageFieldForMessage(received_api);
-    can_feedback_freq_status_->tick();
   }
 
   if (!field) {
@@ -141,7 +124,7 @@ double Driver::radPerSecToRpm() const
 void Driver::sendId(const uint32_t id)
 {
   can_msgs::msg::Frame msg = getMsg(id);
-  interface_->send(msg);
+  interface_->queue(msg);
 }
 
 void Driver::sendUint8(const uint32_t id, const uint8_t value)
@@ -152,7 +135,7 @@ void Driver::sendUint8(const uint32_t id, const uint8_t value)
   std::memcpy(data, &value, sizeof(uint8_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->send(msg);
+  interface_->queue(msg);
 }
 
 void Driver::sendUint16(const uint32_t id, const uint16_t value)
@@ -163,7 +146,7 @@ void Driver::sendUint16(const uint32_t id, const uint16_t value)
   std::memcpy(data, &value, sizeof(uint16_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->send(msg);
+  interface_->queue(msg);
 }
 
 void Driver::sendFixed8x8(const uint32_t id, const float value)
@@ -176,7 +159,7 @@ void Driver::sendFixed8x8(const uint32_t id, const float value)
   std::memcpy(data, &output_value, sizeof(int16_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->send(msg);
+  interface_->queue(msg);
 }
 
 void Driver::sendFixed16x16(const uint32_t id, const double value)
@@ -189,7 +172,7 @@ void Driver::sendFixed16x16(const uint32_t id, const double value)
   std::memcpy(data, &output_value, sizeof(int32_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->send(msg);
+  interface_->queue(msg);
 }
 
 can_msgs::msg::Frame Driver::getMsg(const uint32_t id)
@@ -426,9 +409,7 @@ void Driver::configureParams()
     case ConfigurationState::Initializing:
       break;
     case ConfigurationState::PowerFlag:
-      // Continue to check last power flag until it has been cleared
       if (lastPower() == 1) {
-        // Send request every second
         if ((now - last_power_clear_ts_) > 1.0) {
           sendUint8((LM_API_STATUS_POWER | device_number_), 1);
           last_power_clear_ts_ = now;
@@ -1041,20 +1022,6 @@ Driver::Field * Driver::cfgFieldForMessage(uint32_t api)
 {
   uint32_t cfg_field_index = (api & CAN_MSGID_API_ID_M) >> CAN_MSGID_API_S;
   return &cfg_fields_[cfg_field_index];
-}
-
-/**
- * @brief Runs the frequency diagnostic update to populate the status message
- */
-void Driver::runFreqStatus(diagnostic_updater::DiagnosticStatusWrapper & stat)
-{
-  can_feedback_freq_status_->run(stat);
-
-  stat.add("Duty cycle", lastDutyCycle());
-  stat.add("Current (A)", lastCurrent());
-  stat.add("Speed (rad/s)", lastSpeed());
-  stat.add("Position", lastPosition());
-  stat.add("Setpoint", lastSetpoint());
 }
 
 }  // namespace puma_motor_driver
