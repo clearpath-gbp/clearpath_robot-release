@@ -27,10 +27,14 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <stdint.h>
 #include <string>
 
-#include "can_msgs/msg/frame.hpp"
-#include "clearpath_ros2_socketcan_interface/socketcan_interface.hpp"
+#include <rclcpp/rclcpp.hpp>
+
+#include "can_hardware/common/types.hpp"
+#include "can_hardware/drivers/socketcan_driver.hpp"
 
 #include "clearpath_motor_msgs/msg/puma_status.hpp"
+
+#include "diagnostic_updater/update_functions.hpp"
 
 #include "puma_motor_driver/can_proto.hpp"
 
@@ -41,12 +45,12 @@ class Driver
 {
 public:
   Driver(
-    const std::shared_ptr<clearpath_ros2_socketcan_interface::SocketCANInterface> interface,
+    const std::shared_ptr<can_hardware::drivers::SocketCanDriver> interface,
     std::shared_ptr<rclcpp::Node> nh,
     const uint8_t & device_number,
     const std::string & device_name);
 
-  void processMessage(const can_msgs::msg::Frame::SharedPtr received_msg);
+  void processMessage(const can_hardware::Frame & frame);
 
   double radPerSecToRpm() const;
 
@@ -460,8 +464,12 @@ public:
     }
   };
 
+  // Diagnostics
+  void runFreqStatus(diagnostic_updater::DiagnosticStatusWrapper & stat);
+  void driverUpdateDiagnostics(diagnostic_updater::DiagnosticStatusWrapper & stat, bool updating);
+
 private:
-  std::shared_ptr<clearpath_ros2_socketcan_interface::SocketCANInterface> interface_;
+  std::shared_ptr<can_hardware::drivers::SocketCanDriver> interface_;
   std::shared_ptr<rclcpp::Node> nh_;
   uint8_t device_number_;
   std::string device_name_;
@@ -480,15 +488,14 @@ private:
   /**
    * Helpers to generate data for CAN messages.
    */
-  can_msgs::msg::Frame::SharedPtr can_msg_;
   void sendId(const uint32_t id);
   void sendUint8(const uint32_t id, const uint8_t value);
   void sendUint16(const uint32_t id, const uint16_t value);
   void sendFixed8x8(const uint32_t id, const float value);
   void sendFixed16x16(const uint32_t id, const double value);
-  can_msgs::msg::Frame getMsg(const uint32_t id);
-  uint32_t getApi(const can_msgs::msg::Frame msg);
-  uint32_t getDeviceNumber(const can_msgs::msg::Frame msg);
+  can_hardware::Frame getMsg(const uint32_t id);
+  uint32_t getApi(const can_hardware::Frame & msg);
+  uint32_t getDeviceNumber(const can_hardware::Frame & msg);
 
   /**
    * Comparing the raw bytes of the 16x16 fixed-point numbers
@@ -521,6 +528,10 @@ private:
   Field * ictrlFieldForMessage(uint32_t api);
   Field * statusFieldForMessage(uint32_t api);
   Field * cfgFieldForMessage(uint32_t api);
+
+  // Frequency Status for diagnostics
+  std::shared_ptr<double> can_feedback_rate_; // Shared ptr prevents copy errors of FrequencyStatus
+  std::shared_ptr<diagnostic_updater::FrequencyStatus> can_feedback_freq_status_;
 };
 
 }  // namespace puma_motor_driver
