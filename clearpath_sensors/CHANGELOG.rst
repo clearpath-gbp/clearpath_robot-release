@@ -2,210 +2,59 @@
 Changelog for package clearpath_sensors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.8.5 (2026-01-19)
+1.3.7 (2026-01-20)
 ------------------
 
-2.8.4 (2025-11-13)
+1.3.6 (2025-11-20)
 ------------------
-* [clearpath_sensors] Updated the StereoLabs Zed topic remapping to reflect changes in the driver. (`#282 <https://github.com/clearpathrobotics/clearpath_robot/issues/282>`_)
+* [clearpath_sensors] Updated the StereoLabs Zed topic remapping to reflect changes in the driver. (`#284 <https://github.com/clearpathrobotics/clearpath_robot/issues/284>`_)
 * Contributors: Tony Baltovski
 
-2.8.3 (2025-11-10)
+1.3.5 (2025-07-29)
 ------------------
 
-2.8.2 (2025-10-28)
+1.3.4 (2025-07-24)
 ------------------
-
-2.8.1 (2025-10-23)
-------------------
-* Fix/zed2 objdet params (`#277 <https://github.com/clearpathrobotics/clearpath_robot/issues/277>`_)
-  * [clearpath_sensors] Updated Zed2 object detection mode type.
-  * [clearpath_sensors] Updated Zed2 object detection model name.
+* Remap `navsatfix` to `fix` (`#128 <https://github.com/clearpathrobotics/clearpath_robot/issues/128>`_) (`#251 <https://github.com/clearpathrobotics/clearpath_robot/issues/251>`_)
+  Co-authored-by: Chris Iverach-Brereton <59611394+civerachb-cpr@users.noreply.github.com>
 * Contributors: Tony Baltovski
 
-2.8.0 (2025-10-23)
+1.3.3 (2025-07-03)
 ------------------
-* Remap preview to separate topic (`#276 <https://github.com/clearpathrobotics/clearpath_robot/issues/276>`_)
-* Contributors: luis-camero
+* [clearpath_sensors] Fixed missing dependency lms1xx. (`#234 <https://github.com/clearpathrobotics/clearpath_robot/issues/234>`_)
+* Contributors: Tony Baltovski
 
-2.7.2 (2025-09-18)
+1.3.2 (2025-06-11)
 ------------------
 
-2.7.1 (2025-09-16)
+1.3.1 (2025-05-20)
 ------------------
-* Jazzy Fix: Stereolabs Zed launch file (`#265 <https://github.com/clearpathrobotics/clearpath_robot/issues/265>`_)
-  * Fix: Stereolabs Zed launch file (`#208 <https://github.com/clearpathrobotics/clearpath_robot/issues/208>`_)
+* Fix: Stereolabs Zed launch file (`#208 <https://github.com/clearpathrobotics/clearpath_robot/issues/208>`_)
   * Update node parameters
   * Switch to composable node
-  * Double to single quotes in Zed parameters
-  * Add 'NEURAL_LIGHT' to parameter comment
 * Contributors: luis-camero
 
-2.7.0 (2025-08-25)
-------------------
-* Remove exec_depend on fixposition driver (`#263 <https://github.com/clearpathrobotics/clearpath_robot/issues/263>`_)
-  Update the version requirement in the commented-out block below
-* Update Fixposition launch file, parameters to use 8.x driver (`#253 <https://github.com/clearpathrobotics/clearpath_robot/issues/253>`_)
-  * Migration of Fixposition 8.x parameters
-  * Update topic remaps for new driver version
-* Contributors: Chris Iverach-Brereton
-
-2.6.3 (2025-08-18)
-------------------
-* Add missing dependency (`#258 <https://github.com/clearpathrobotics/clearpath_robot/issues/258>`_)
-* Fix/image remaps (`#257 <https://github.com/clearpathrobotics/clearpath_robot/issues/257>`_)
-  * Add remaps for additional image transports
-  * Add missing mono remap
-* Correct default oakd config file (`#255 <https://github.com/clearpathrobotics/clearpath_robot/issues/255>`_)
-* Contributors: Hilary Luo
-
-2.6.2 (2025-07-15)
+1.3.0 (2025-04-15)
 ------------------
 
-2.6.1 (2025-07-04)
+1.2.0 (2025-03-14)
 ------------------
-
-2.6.0 (2025-07-04)
-------------------
-* [clearpath_sensors] Fixed missing dependency lms1xx. (`#233 <https://github.com/clearpathrobotics/clearpath_robot/issues/233>`_)
-* Contributors: Tony Baltovski
-
-2.5.1 (2025-06-17)
-------------------
-
-2.5.0 (2025-05-29)
-------------------
-* Fix: Wiferion Charger Dependency (`#221 <https://github.com/clearpathrobotics/clearpath_robot/issues/221>`_)
-  Add wiferion_charger dependency to clearpath_sensors
-* Feature: ros2_canopen Inventus driver switch  (`#216 <https://github.com/clearpathrobotics/clearpath_robot/issues/216>`_)
-  * Add canopen_inventus launch to generator
-  * Add canopen_inventus_bringup dependency
-  * Add canopen_inventus_bringup to CI rosdep key ignore
-  * Remove inventus_bmu config and launch
-  * Remove unused import
+* Feature Humble Ouster (`#143 <https://github.com/clearpathrobotics/clearpath_robot/issues/143>`_)
+  * Add Ouster launch and configuration file
 * Contributors: luis-camero
 
-2.4.1 (2025-05-20)
+1.1.2 (2025-03-11)
 ------------------
 
-2.4.0 (2025-04-30)
+1.1.1 (2025-03-05)
 ------------------
+* Add imu_filter launch file and added madgwick entry to filter
+* Add imu filter to generator
+* Rename imu_filter_node to imu_filter_madgwick
+* Contributors: luis-camero
 
-2.3.3 (2025-04-17)
+1.1.0 (2025-01-15)
 ------------------
-
-2.3.2 (2025-04-16)
-------------------
-
-2.3.1 (2025-04-14)
-------------------
-
-2.3.0 (2025-04-11)
-------------------
-* Feature: Wiferion Charger (`#194 <https://github.com/clearpathrobotics/clearpath_robot/issues/194>`_)
-* Remap IMU topic to imu/data_raw (per RPSW-2504) (`#188 <https://github.com/clearpathrobotics/clearpath_robot/issues/188>`_)
-* Add support for INS sensors + Fixposition XVN (`#176 <https://github.com/clearpathrobotics/clearpath_robot/issues/176>`_)
-* Feature/inventus diagnostics (`#170 <https://github.com/clearpathrobotics/clearpath_robot/issues/170>`_)
-* Contributors: Chris Iverach-Brereton, Hilary Luo, Luis Camero
-
-2.2.4 (2025-04-07)
-------------------
-
-2.2.3 (2025-03-20)
-------------------
-
-2.2.2 (2025-03-17)
-------------------
-
-2.2.1 (2025-03-12)
-------------------
-
-2.2.0 (2025-03-11)
-------------------
-* Feature Jazzy Ouster (`#155 <https://github.com/clearpathrobotics/clearpath_robot/issues/155>`_)
-  * Add Ouster launch files
-  * Add ouster dependency
-  * Lint
-  * Fix config file in launch
-* Apply serial, IP address, MX ID to OAK-D cameras (`#159 <https://github.com/clearpathrobotics/clearpath_robot/issues/159>`_)
-* Contributors: Chris Iverach-Brereton, luis-camero
-
-2.1.2 (2025-02-28)
-------------------
-
-2.1.1 (2025-02-06)
-------------------
-
-2.1.0 (2025-01-31)
-------------------
-* Jazzy Phidgets IMU Filter (`#138 <https://github.com/clearpathrobotics/clearpath_robot/issues/138>`_)
-  * IMU Filter
-  * Add imu_filter launch file and added madgwick entry to filter
-  * Add imu filter to generator
-  * Rename imu_filter_node to imu_filter_madgwick
-* Feature/diagnostics (`#135 <https://github.com/clearpathrobotics/clearpath_robot/issues/135>`_)
-  * Initial port of diagnostics to C++
-  * Remap axis camera topics to match API
-  * Monitor MCU Status message frequency
-  * Added firmware version check
-  * Group MCU diagnostics together
-  * Improve messaging around firmware versions
-  * Disable MCU diagnostics for A200
-* Contributors: Hilary Luo, luis-camero
-
-2.0.4 (2025-01-22)
-------------------
-* Add config and launch for inventus
-* Contributors: Luis Camero
-
-2.0.3 (2025-01-17)
-------------------
-
-2.0.2 (2025-01-17)
-------------------
-
-2.0.1 (2025-01-17)
-------------------
-
-2.0.0 (2025-01-17)
-------------------
-* Remap `navsatfix` to `fix` (`#128 <https://github.com/clearpathrobotics/clearpath_robot/issues/128>`_)
-* 1.1.0
-* Changes.
-* Remove the image-conversion launch files; they're being relocated to clearpath_offboard_sensors (`#118 <https://github.com/clearpathrobotics/clearpath_robot/issues/118>`_)
-* Fix the path for the pointcloud calibration path for Jazzy
-* Add support for Axis cameras (`#101 <https://github.com/clearpathrobotics/clearpath_robot/issues/101>`_)
-  * Add the axis camera launch file
-  * Add the default PTZ dome configuration & pass those parameters by default
-  * Set the node name so the parameter namespace resolves correctly
-  * Add the complete PTZ config for the dome camera
-  * Remap image_raw -> image, ~joint_states -> /robot_namespace/joint_states
-  * Add missing / to namespaces
-  * Remove the ~ from the namespaces; it's not needed
-  * Move the joint_states into the platform namespace
-  * Remove duplicate `ptz` entry
-* Move imu_filter.yaml to clearpath_sensors
-* Remappings to for Phidget Spatial
-* Ffmpeg manual launch (`#105 <https://github.com/clearpathrobotics/clearpath_robot/issues/105>`_)
-  * Added manual launch files for encoding/decoding ffmpeg
-* Switch remove RGB from pointcloud
-* Added pointcloud support to OakD
-* Set Blackfly binning as 2 for optimal operation
-* Update frame rate to match default in clearpath_config although this rate is always overridden, must be integer
-* Restrict image transports on decoded blackfly topics to relevant ones
-* Disable all extra image transports on the encoded Blackfly topic
-* Add ffmpeg compression support for Blackfly
-* 0.3.2
-* Changes.
-* Add OAKD (`#92 <https://github.com/clearpathrobotics/clearpath_robot/issues/92>`_)
-  * Add OAKD
-  * Remove unused parameter
-  * Add UDEV for OAKD
-* Add phidgets spatial (`#91 <https://github.com/clearpathrobotics/clearpath_robot/issues/91>`_)
-  * Add phidget spatial config and launch files
-  * Add dependency
-  * Double to single quotes
-* Contributors: Chris Iverach-Brereton, Hilary Luo, Luis Camero, Tony Baltovski, luis-camero
 
 1.0.1 (2024-11-28)
 ------------------

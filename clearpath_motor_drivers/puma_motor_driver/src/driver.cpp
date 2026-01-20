@@ -22,6 +22,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "clearpath_motor_msgs/msg/puma_status.hpp"
+#include "clearpath_ros2_socketcan_interface/socketcan_interface.hpp"
 
 #include "puma_motor_driver/driver.hpp"
 
@@ -29,9 +30,6 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <cstring>
 #include <math.h>
 #include "rclcpp/rclcpp.hpp"
-
-// must match firmware
-#define CAN_FEEDBACK_RATE 40.0
 
 namespace puma_motor_driver
 {
@@ -58,7 +56,7 @@ enum ConfigurationState
 typedef ConfigurationStates::ConfigurationState ConfigurationState;
 
 Driver::Driver(
-  const std::shared_ptr<can_hardware::drivers::SocketCanDriver> interface,
+  const std::shared_ptr<clearpath_ros2_socketcan_interface::SocketCANInterface> interface,
   std::shared_ptr<rclcpp::Node> nh,
   const uint8_t & device_number,
   const std::string & device_name)
@@ -76,50 +74,36 @@ Driver::Driver(
   encoder_cpr_(1),
   gear_ratio_(1)
 {
-  can_feedback_rate_ = std::make_shared<double>(CAN_FEEDBACK_RATE);
-  can_feedback_freq_status_ = std::make_shared<diagnostic_updater::FrequencyStatus>(
-    diagnostic_updater::FrequencyStatusParam(
-      can_feedback_rate_.get(),
-      can_feedback_rate_.get(),
-      0.1,
-      5
-    )
-  );
 }
 
-void Driver::processMessage(const can_hardware::Frame & received_msg)
+void Driver::processMessage(const can_msgs::msg::Frame::SharedPtr received_msg)
 {
   // If it's not our message, jump out.
-  if (getDeviceNumber(received_msg) != device_number_) {
+  if (getDeviceNumber(*received_msg) != device_number_) {
     return;
   }
 
   // If there's no data then this is a request message, jump out.
-  if (received_msg.dlc == 0) {
+  if (received_msg->dlc == 0) {
     return;
   }
 
   Field * field = nullptr;
-  uint32_t received_api = getApi(received_msg);
+  uint32_t received_api = getApi(*received_msg);
   if ((received_api & CAN_MSGID_API_M & CAN_API_MC_CFG) == CAN_API_MC_CFG) {
     field = cfgFieldForMessage(received_api);
   } else if ((received_api & CAN_MSGID_API_M & CAN_API_MC_STATUS) == CAN_API_MC_STATUS) {
     field = statusFieldForMessage(received_api);
   } else if ((received_api & CAN_MSGID_API_M & CAN_API_MC_ICTRL) == CAN_API_MC_ICTRL) {
     field = ictrlFieldForMessage(received_api);
-    can_feedback_freq_status_->tick();
   } else if ((received_api & CAN_MSGID_API_M & CAN_API_MC_POS) == CAN_API_MC_POS) {
     field = posFieldForMessage(received_api);
-    can_feedback_freq_status_->tick();
   } else if ((received_api & CAN_MSGID_API_M & CAN_API_MC_VCOMP) == CAN_API_MC_VCOMP) {
     field = vcompFieldForMessage(received_api);
-    can_feedback_freq_status_->tick();
   } else if ((received_api & CAN_MSGID_API_M & CAN_API_MC_SPD) == CAN_API_MC_SPD) {
     field = spdFieldForMessage(received_api);
-    can_feedback_freq_status_->tick();
   } else if ((received_api & CAN_MSGID_API_M & CAN_API_MC_VOLTAGE) == CAN_API_MC_VOLTAGE) {
     field = voltageFieldForMessage(received_api);
-    can_feedback_freq_status_->tick();
   }
 
   if (!field) {
@@ -127,7 +111,7 @@ void Driver::processMessage(const can_hardware::Frame & received_msg)
   }
 
   // Copy the received data and mark that field as received.
-  std::copy_n(std::begin(received_msg.data), Field::FIELD_STRUCT_DATA_SIZE,
+  std::copy_n(std::begin(received_msg->data), Field::FIELD_STRUCT_DATA_SIZE,
     std::begin(field->data));
   field->received = true;
 }
@@ -139,35 +123,35 @@ double Driver::radPerSecToRpm() const
 
 void Driver::sendId(const uint32_t id)
 {
-  auto msg = getMsg(id);
-  interface_->sendFrame(msg);
+  can_msgs::msg::Frame msg = getMsg(id);
+  interface_->queue(msg);
 }
 
 void Driver::sendUint8(const uint32_t id, const uint8_t value)
 {
-  auto msg = getMsg(id);
+  can_msgs::msg::Frame msg = getMsg(id);
   msg.dlc = sizeof(uint8_t);
   uint8_t data[8] = {0};
   std::memcpy(data, &value, sizeof(uint8_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->sendFrame(msg);
+  interface_->queue(msg);
 }
 
 void Driver::sendUint16(const uint32_t id, const uint16_t value)
 {
-  auto msg = getMsg(id);
+  can_msgs::msg::Frame msg = getMsg(id);
   msg.dlc = sizeof(uint16_t);
   uint8_t data[8] = {0};
   std::memcpy(data, &value, sizeof(uint16_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->sendFrame(msg);
+  interface_->queue(msg);
 }
 
 void Driver::sendFixed8x8(const uint32_t id, const float value)
 {
-  auto msg = getMsg(id);
+  can_msgs::msg::Frame msg = getMsg(id);
   msg.dlc = sizeof(int16_t);
   int16_t output_value = static_cast<int16_t>(static_cast<float>(1 << 8) * value);
 
@@ -175,12 +159,12 @@ void Driver::sendFixed8x8(const uint32_t id, const float value)
   std::memcpy(data, &output_value, sizeof(int16_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->sendFrame(msg);
+  interface_->queue(msg);
 }
 
 void Driver::sendFixed16x16(const uint32_t id, const double value)
 {
-  auto msg = getMsg(id);
+  can_msgs::msg::Frame msg = getMsg(id);
   msg.dlc = sizeof(int32_t);
   int32_t output_value = static_cast<int32_t>(static_cast<double>((1 << 16) * value));
 
@@ -188,24 +172,26 @@ void Driver::sendFixed16x16(const uint32_t id, const double value)
   std::memcpy(data, &output_value, sizeof(int32_t));
   std::copy(std::begin(data), std::end(data), std::begin(msg.data));
 
-  interface_->sendFrame(msg);
+  interface_->queue(msg);
 }
 
-can_hardware::Frame Driver::getMsg(const uint32_t id)
+can_msgs::msg::Frame Driver::getMsg(const uint32_t id)
 {
-  can_hardware::Frame msg;
+  can_msgs::msg::Frame msg;
   msg.id = id;
   msg.dlc = 0;
   msg.is_extended = true;
+  msg.header.stamp = nh_->get_clock()->now();
+  msg.header.frame_id = "base_link";
   return msg;
 }
 
-uint32_t Driver::getApi(const can_hardware::Frame & msg)
+uint32_t Driver::getApi(const can_msgs::msg::Frame msg)
 {
   return msg.id & (CAN_MSGID_FULL_M ^ CAN_MSGID_DEVNO_M);
 }
 
-uint32_t Driver::getDeviceNumber(const can_hardware::Frame & msg)
+uint32_t Driver::getDeviceNumber(const can_msgs::msg::Frame msg)
 {
   return msg.id & CAN_MSGID_DEVNO_M;
 }
@@ -423,9 +409,7 @@ void Driver::configureParams()
     case ConfigurationState::Initializing:
       break;
     case ConfigurationState::PowerFlag:
-      // Continue to check last power flag until it has been cleared
       if (lastPower() == 1) {
-        // Send request every second
         if ((now - last_power_clear_ts_) > 1.0) {
           sendUint8((LM_API_STATUS_POWER | device_number_), 1);
           last_power_clear_ts_ = now;
@@ -898,7 +882,7 @@ uint16_t Driver::encoderCounts()
 
 double Driver::getP()
 {
-  Field * field = nullptr;
+  Field * field;
   switch (control_mode_) {
     case clearpath_motor_msgs::msg::PumaStatus::MODE_CURRENT:
       field = ictrlFieldForMessage(getApi(getMsg(LM_API_ICTRL_PC)));
@@ -915,7 +899,7 @@ double Driver::getP()
 
 double Driver::getI()
 {
-  Field * field = nullptr;
+  Field * field;
   switch (control_mode_) {
     case clearpath_motor_msgs::msg::PumaStatus::MODE_CURRENT:
       field = ictrlFieldForMessage(getApi(getMsg(LM_API_ICTRL_IC)));
@@ -932,7 +916,7 @@ double Driver::getI()
 
 double Driver::getD()
 {
-  Field * field = nullptr;
+  Field * field;
   switch (control_mode_) {
     case clearpath_motor_msgs::msg::PumaStatus::MODE_CURRENT:
       field = ictrlFieldForMessage(getApi(getMsg(LM_API_ICTRL_DC)));
@@ -949,7 +933,7 @@ double Driver::getD()
 
 uint8_t * Driver::getRawP()
 {
-  Field * field = nullptr;
+  Field * field;
   switch (control_mode_) {
     case clearpath_motor_msgs::msg::PumaStatus::MODE_CURRENT:
       field = ictrlFieldForMessage(getApi(getMsg(LM_API_ICTRL_PC)));
@@ -966,7 +950,7 @@ uint8_t * Driver::getRawP()
 
 uint8_t * Driver::getRawI()
 {
-  Field * field = nullptr;
+  Field * field;
   switch (control_mode_) {
     case clearpath_motor_msgs::msg::PumaStatus::MODE_CURRENT:
       field = ictrlFieldForMessage(getApi(getMsg(LM_API_ICTRL_IC)));
@@ -983,7 +967,7 @@ uint8_t * Driver::getRawI()
 
 uint8_t * Driver::getRawD()
 {
-  Field * field = nullptr;
+  Field * field;
   switch (control_mode_) {
     case clearpath_motor_msgs::msg::PumaStatus::MODE_CURRENT:
       field = ictrlFieldForMessage(getApi(getMsg(LM_API_ICTRL_DC)));
@@ -1038,20 +1022,6 @@ Driver::Field * Driver::cfgFieldForMessage(uint32_t api)
 {
   uint32_t cfg_field_index = (api & CAN_MSGID_API_ID_M) >> CAN_MSGID_API_S;
   return &cfg_fields_[cfg_field_index];
-}
-
-/**
- * @brief Runs the frequency diagnostic update to populate the status message
- */
-void Driver::runFreqStatus(diagnostic_updater::DiagnosticStatusWrapper & stat)
-{
-  can_feedback_freq_status_->run(stat);
-
-  stat.add("Duty cycle", lastDutyCycle());
-  stat.add("Current (A)", lastCurrent());
-  stat.add("Speed (rad/s)", lastSpeed());
-  stat.add("Position", lastPosition());
-  stat.add("Setpoint", lastSetpoint());
 }
 
 }  // namespace puma_motor_driver
