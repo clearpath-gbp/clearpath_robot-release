@@ -2,6 +2,11 @@
 Changelog for package clearpath_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.9.1 (2026-02-11)
+------------------
+* Bumped version deps.
+* Contributors: Tony Baltovski
+
 2.9.0 (2026-02-11)
 ------------------
 * Bumped clearpath_firmware version.
