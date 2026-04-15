@@ -43,9 +43,9 @@
 #include "hardware_interface/system_interface.hpp"
 #include "hardware_interface/types/hardware_interface_return_values.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
+#include "hardware_interface/visibility_control.h"
 
 #include "clearpath_hardware_interfaces/puma/hardware_interface.hpp"
-#include "clearpath_hardware_interfaces/visibility_control.h"
 
 
 namespace clearpath_hardware_interfaces
@@ -62,7 +62,7 @@ public:
   RCLCPP_SHARED_PTR_DEFINITIONS(PumaHardware)
 
   HARDWARE_INTERFACE_PUBLIC
-  hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareComponentInterfaceParams & params) override;
+  hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override;
 
   HARDWARE_INTERFACE_PUBLIC
   std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
@@ -84,7 +84,7 @@ public:
 protected:
   void writeCommandsToHardware();
   void updateJointsFromHardware();
-  virtual hardware_interface::CallbackReturn getHardwareInfo(const hardware_interface::HardwareComponentInterfaceParams & params);
+  virtual hardware_interface::CallbackReturn getHardwareInfo(const hardware_interface::HardwareInfo & info);
   virtual hardware_interface::CallbackReturn validateJoints();
   virtual hardware_interface::CallbackReturn initHardwareInterface();
   std::shared_ptr<PumaHardwareInterface> node_;

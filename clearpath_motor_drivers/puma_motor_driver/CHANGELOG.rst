@@ -2,146 +2,61 @@
 Changelog for package puma_motor_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.1.0 (2025-01-15)
+1.3.8 (2026-04-14)
+------------------
+* [Humble] Changed to rostooling/setup-ros-docker:ubuntu-noble-latest for CI image. (`#313 <https://github.com/clearpathrobotics/clearpath_robot/issues/313>`_)
+  * Changed to rostooling/setup-ros-docker:ubuntu-noble-latest for CI image. (`#312 <https://github.com/clearpathrobotics/clearpath_robot/issues/312>`_)
+  (cherry picked from commit 6e16b3cbdb3d04b644ba6c6fb3247267059770c9)
+  # Conflicts:
+  #	.github/workflows/ci.yml
+  * Resolve backport conflicts: use rostooling/setup-ros-docker:ubuntu-jammy-latest for Humble CI
+  * Add ewellix_driver to ROSDEP_SKIP_KEYS for Humble CI
+  * Linting fixes.
+  * Updated CI to match Jazzy.
+  * Removed --break-system-packages.
+  ---------
+  Co-authored-by: Tony Baltovski <tbaltovski@clearpathrobotics.com>
+* Contributors: mergify[bot]
+
+1.3.7 (2026-01-20)
 ------------------
 
-2.9.2 (2026-04-14)
+1.3.6 (2025-11-20)
 ------------------
 
-2.9.1 (2026-02-11)
+1.3.5 (2025-07-29)
 ------------------
 
-2.9.0 (2026-02-11)
-------------------
-* Fix: CMake Verision and CI (`#299 <https://github.com/clearpathrobotics/clearpath_robot/issues/299>`_)
-  * Updated cmake version to 3.20
-  * Switch action to run on container
-  * Update repos update action version
-  * Increase test timeout
-* Contributors: luis-camero
-
-2.8.6 (2026-01-20)
+1.3.4 (2025-07-24)
 ------------------
 
-2.8.5 (2026-01-19)
-------------------
-* CORE-36182: [puma_motor_driver] Port to can_hardware socketcan driver (`#286 <https://github.com/clearpathrobotics/clearpath_robot/issues/286>`_)
-  * CORE-36182: [puma_motor_driver] Port to can_hardware socketcan driver
-  * misc clean up
-* Contributors: Natesh Narain
-
-2.8.4 (2025-11-13)
+1.3.3 (2025-07-03)
 ------------------
 
-2.8.3 (2025-11-10)
+1.3.2 (2025-06-11)
 ------------------
 
-2.8.2 (2025-10-28)
+1.3.1 (2025-05-20)
 ------------------
 
-2.8.1 (2025-10-23)
+1.3.0 (2025-04-15)
 ------------------
 
-2.8.0 (2025-10-23)
-------------------
-* Add additional Puma diagnostics (`#270 <https://github.com/clearpathrobotics/clearpath_robot/issues/270>`_)
-* Contributors: Chris Iverach-Brereton
-
-2.7.2 (2025-09-18)
+1.2.0 (2025-03-14)
 ------------------
 
-2.7.1 (2025-09-16)
+1.1.2 (2025-03-11)
 ------------------
+* Fix: Robust puma initialization
+* Contributors: Stephen Phillips, Tony Baltovski
 
-2.7.0 (2025-08-25)
+1.1.1 (2025-03-05)
 ------------------
-
-2.6.3 (2025-08-18)
-------------------
-
-2.6.2 (2025-07-15)
-------------------
-
-2.6.1 (2025-07-04)
-------------------
-
-2.6.0 (2025-07-04)
-------------------
-
-2.5.1 (2025-06-17)
-------------------
-
-2.5.0 (2025-05-29)
-------------------
-
-2.4.1 (2025-05-20)
-------------------
-
-2.4.0 (2025-04-30)
-------------------
-
-2.3.3 (2025-04-17)
-------------------
-
-2.3.2 (2025-04-16)
-------------------
-* Fixed depend version.
-* Contributors: Tony Baltovski
-
-2.3.1 (2025-04-14)
-------------------
-
-2.3.0 (2025-04-11)
-------------------
-* Reduced feedback frequency to 20hz (`#195 <https://github.com/clearpathrobotics/clearpath_robot/issues/195>`_)
-* Jazzy dingo and ridgeback fixes (`#169 <https://github.com/clearpathrobotics/clearpath_robot/issues/169>`_)
-* Contributors: Roni Kreinin
-
-2.2.4 (2025-04-07)
-------------------
-
-2.2.3 (2025-03-20)
-------------------
-
-2.2.2 (2025-03-17)
-------------------
-
-2.2.1 (2025-03-12)
-------------------
-
-2.2.0 (2025-03-11)
-------------------
-* [clearpath_motor_drivers/puma_motor_driver] Linting fix.
 * [clearpath_motor_drivers/puma_motor_driver] Fixed copy size.
 * Contributors: Tony Baltovski
 
-2.1.2 (2025-02-28)
+1.1.0 (2025-01-15)
 ------------------
-
-2.1.1 (2025-02-06)
-------------------
-
-2.1.0 (2025-01-31)
-------------------
-
-2.0.4 (2025-01-22)
-------------------
-
-2.0.3 (2025-01-17)
-------------------
-
-2.0.2 (2025-01-17)
-------------------
-
-2.0.1 (2025-01-17)
-------------------
-
-2.0.0 (2025-01-17)
-------------------
-* 1.1.0
-* Changes.
-* Add clearpath_motor_drivers, puma_motor_driver
-* Contributors: Luis Camero, Tony Baltovski
 
 1.0.1 (2024-11-28)
 ------------------
