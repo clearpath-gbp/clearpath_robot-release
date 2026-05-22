@@ -2,6 +2,9 @@
 Changelog for package clearpath_platform
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.9.3 (2026-05-21)
+------------------
+
 2.9.2 (2026-04-14)
 ------------------
 * Fixed unused parameter warning in LynxHardware. (`#326 <https://github.com/clearpathrobotics/clearpath_robot/issues/326>`_)
