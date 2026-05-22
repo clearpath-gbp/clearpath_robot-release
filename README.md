@@ -1,17 +1,32 @@
-# clearpath_robot
+# Clearpath Tests
 
-ROS 2 packages for interfacing with Clearpath Platforms (real hardware).
+This package contains tests for validating hardware & software performance of supported
+Clearpath Robotics' platforms.
 
-For supported platforms, sensors and manipulators plus additional details, please see: https://docs.clearpathrobotics.com/docs/ros/
+## Usage
 
-## Generator Tests
+To run the tests, SSH into the robot and run
 
-Changes to the generators in this repository (`clearpath_generator_robot`) may affect the
-generated output for launch files and parameter files. The
-[clearpath_generator_tests](https://github.com/clearpathrobotics/clearpath_generator_tests)
-repository versions the expected output and validates it through CI.
+```bash
+ros2 run clearpath_tests all_tests
+```
 
-Before merging, ensure a corresponding branch with the **same name** exists in
-`clearpath_generator_tests` with regenerated samples. See the
-[Development Workflow](https://github.com/clearpathrobotics/clearpath_generator_tests#development-workflow)
-section of `clearpath_generator_tests` for the full process.
+If your `setup_path` is _not_ `/etc/clearpath`, specify the correct path with
+
+```bash
+ros2 run clearpath_tests all_tests --ros-args -p setup_path:=/path/to/setup_dir
+```
+
+## Pre-test preparation
+
+Tests require that the robot be mobile; ensure that the robot can travel 5m in a straight line
+and perform two complete on-the-spot rotations without colliding with anything, pulling cables,
+etc....
+
+## Output
+
+The summary of test results is printed to `stdout`, but the full test report will be saved to
+`/tmp/clearpath_test_results.YYYYMMDDhhmm.md`.
+
+Markdown (`.md`) files can be opened in any normal text editor, or can be renders with a
+[markdown viewer plugin](https://github.com/simov/markdown-viewer) for Chrome or Firefox.
