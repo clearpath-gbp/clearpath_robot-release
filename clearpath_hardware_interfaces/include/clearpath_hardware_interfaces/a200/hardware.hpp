@@ -10,6 +10,7 @@
 #include "hardware_interface/hardware_info.hpp"
 #include "hardware_interface/system_interface.hpp"
 #include "hardware_interface/types/hardware_interface_return_values.hpp"
+#include "hardware_interface/visibility_control.h"
 #include "rclcpp/macros.hpp"
 
 #include "rclcpp/rclcpp.hpp"
@@ -19,7 +20,6 @@
 
 #include "clearpath_hardware_interfaces/a200/horizon_legacy/horizon_legacy_wrapper.h"
 #include "clearpath_hardware_interfaces/a200/status.hpp"
-#include "clearpath_hardware_interfaces/visibility_control.h"
 
 #include "clearpath_platform_msgs/msg/power.hpp"
 #include "clearpath_platform_msgs/msg/status.hpp"
@@ -36,7 +36,7 @@ public:
   RCLCPP_SHARED_PTR_DEFINITIONS(A200Hardware)
 
   HARDWARE_INTERFACE_PUBLIC
-  hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareComponentInterfaceParams & params) override;
+  hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override;
 
   HARDWARE_INTERFACE_PUBLIC
   std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
