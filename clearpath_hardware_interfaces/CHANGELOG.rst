@@ -2,6 +2,9 @@
 Changelog for package clearpath_platform
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.9.6 (2026-08-13)
+------------------
+
 2.9.5 (2026-08-07)
 ------------------
 * Adjust Steps in Low Battery Sequence (`#340 <https://github.com/clearpathrobotics/clearpath_robot/issues/340>`_)
