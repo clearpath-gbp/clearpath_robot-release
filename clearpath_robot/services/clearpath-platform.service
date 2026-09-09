@@ -5,7 +5,7 @@ After=clearpath-robot.service clearpath-vcan.service
 Wants=clearpath-vcan.service
 
 [Service]
-User=robot
+User=administrator
 Type=simple
 ExecStart=/usr/sbin/clearpath-platform-start
 
