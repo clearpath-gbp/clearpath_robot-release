@@ -1,83 +1,66 @@
-# clearpath_robot
+# Lynx Motor Driver
 
-ROS 2 packages for interfacing with Clearpath Platforms (real hardware).
+C++ Driver and ROS 2 node for Clearpath's Lynx BLDC motor controller.
 
-For supported platforms, sensors and manipulators plus additional details, please see: <https://docs.clearpathrobotics.com/docs/ros/>
+## Clearpath Platforms using Lynx
 
-## Where this fits in the Clearpath ROS 2 stack
+- Husky A300
 
-`clearpath_robot` is the **on-robot** half of the stack: it runs on the physical platform's
-onboard computer, talks to the motor controllers and sensors, and brings the robot up as a set of
-`systemd` services. It consumes the description/control assets from `clearpath_common` and the
-files generated from `robot.yaml`.
+## Usage
 
-```mermaid
-flowchart LR
-    yaml["robot.yaml"] --> config["clearpath_config"]
-    config --> genr["clearpath_generator_robot<br/>(this repo)"]
-    genr --> out["/etc/clearpath<br/>generated launch / params"]
-    common["clearpath_common<br/>description + control"] --> bringup
-    out --> bringup["systemd services<br/>(clearpath_robot)"]
-    bringup --> hw["motor drivers + sensors<br/>(real hardware)"]
-```
+This driver will be automatically launched when using the [Clearpath Config](https://docs.clearpathrobotics.com/docs/ros/config/yaml/overview) system.
 
-## Packages
+### Manual launch
 
-| Package | Description | Key files |
-| --- | --- | --- |
-| `clearpath_robot` | Metapackage. Bringup **scripts** and the `systemd` **services** that start the robot on boot. | [`scripts/`](clearpath_robot/scripts) (`generate`, `install`, `check`, `grab-diagnostics`, `shutdown.py`, `vcan`), [`services/`](clearpath_robot/services) (`clearpath-robot.service`, `clearpath-platform.service`, `clearpath-sensors.service`, `clearpath-discovery.service`, …) |
-| `clearpath_generator_robot` | Generates the robot-side launch and parameter files from the parsed config. Builds on `clearpath_generator_common`. | [`clearpath_generator_robot/`](clearpath_generator_robot) |
-| `clearpath_hardware_interfaces` | Platform hardware drivers / `ros2_control` hardware interfaces for the base. | [`clearpath_hardware_interfaces/`](clearpath_hardware_interfaces) |
-| `clearpath_motor_drivers` | Low-level motor controller drivers. Contains `lynx_motor_driver` (current platforms) and `puma_motor_driver` (legacy). | [`lynx_motor_driver/`](clearpath_motor_drivers/lynx_motor_driver), [`puma_motor_driver/`](clearpath_motor_drivers/puma_motor_driver) |
-| `clearpath_sensors` | Default launch files and parameter configurations for supported sensors. | [`clearpath_sensors/`](clearpath_sensors) |
-| `clearpath_tests` | On-robot hardware/functional test suite (see its [README](clearpath_tests/README.md)). | [`clearpath_tests/`](clearpath_tests) |
+`ros2 launch lynx_motor_driver lynx_motor_driver.launch.py can_bus:=my_can0 namespace:=/my_namespace parameters:=/path/to/my/parameters.yaml`
 
-## Runtime model
+### Launch arguments
 
-The robot boots via `systemd`. `clearpath-robot.service` is the top-level unit that generates the
-launch files (via `clearpath_generator_robot`) and starts the child services (`platform`,
-`sensors`, `manipulators`, `discovery`, …). The generated output and the source `robot.yaml` live
-in `/etc/clearpath` (the *setup path*). Useful commands on a robot:
+- `can_bus`: CAN bus interface to use.
+  - Default: `can0`
+- `namespace`: Robot namespace.
+  - Default: `/`
+- `parameters`: Node parameters.
+  - Default: `lynx_motor_driver/config/single_test.yaml`
 
-```bash
-sudo systemctl status clearpath-robot     # overall bringup status
-sudo systemctl restart clearpath-robot    # regenerate + restart everything
-journalctl -u clearpath-platform -f       # follow a single service's logs
-ros2 run clearpath_robot generate         # regenerate launch/params from robot.yaml
-```
+## Node
 
-## Build
+The Lynx motor node will create a driver for each specified motor controller. It will subscribe to velocity commands coming from ROS 2 controls, and publish feedback and status data it receives from the Lynx controllers. It also manages the system protection state.
 
-From your ROS 2 workspace root:
+Additionally, the Lynx motor node can be used to calibrate the motors, and update firmware to the Lynx motor controller.
 
-```bash
-rosdep install --from-paths src --ignore-src -r -y
-colcon build --symlink-install
-source install/setup.bash
-```
+### Subscribers
 
-## Notes
+- `platform/motors/cmd`: Velocity commands to send to the motor controller. Joint name must match parameters.
+  - Type: `sensor_msgs/msg/JointState`
 
-- This package assumes it is running on the robot's onboard computer with `/etc/clearpath`
-  populated. For a desktop/offboard workflow use `clearpath_desktop`, and for Gazebo use
-  `clearpath_simulator`.
-- After editing `robot.yaml`, the generated files are stale until you regenerate (restarting
-  `clearpath-robot.service` does this for you).
+### Publishers
 
-## Documentation
+- `platform/motors/system_protection`: System and individual motor controller protection states.
+  - Type: `clearpath_motor_msgs/msg/LynxSystemProtection`
 
-- [Robot installation & services](https://docs.clearpathrobotics.com/docs/ros/installation/robot) — bringup and the `systemd` services.
-- [Generators](https://docs.clearpathrobotics.com/docs/ros/config/generators) — how `robot.yaml` becomes launch/param files.
-- [Driving / teleoperation](https://docs.clearpathrobotics.com/docs/ros/tutorials/driving) and [controller pairing](https://docs.clearpathrobotics.com/docs/ros/installation/controller).
+- `platform/motors/feedback`: Motor feedback such as current, voltage, and velocity.
+  - Type: `clearpath_motor_msgs/msg/LynxMultiFeedback`
 
-## Generator Tests
+- `platform/motors/status`: Motor statuses such as temperature, and flags.
+  - Type: `clearpath_motor_msgs/msg/LynxMultiStatus`
 
-Changes to the generators in this repository (`clearpath_generator_robot`) may affect the
-generated output for launch files and parameter files. The
-[clearpath_generator_tests](https://github.com/clearpathrobotics/clearpath_generator_tests)
-repository versions the expected output and validates it through CI.
+### Actions
 
-Before merging, ensure a corresponding branch with the **same name** exists in
-`clearpath_generator_tests` with regenerated samples. See the
-[Development Workflow](https://github.com/clearpathrobotics/clearpath_generator_tests#development-workflow)
-section of `clearpath_generator_tests` for the full process.
+- `platform/motors/calibrate`: Run the calibration sequence on each motor controller.
+  - Type: `clearpath_motor_msgs/action/LynxCalibrate`
+
+  - Usage:
+`ros2 action send_goal /platform/motors/calibrate clearpath_motor_msgs/action/LynxCalibrate {} --feedback`
+
+:warning:
+The robot must be placed on a box and off the ground before running this action. The wheels will begin to turn when it is called.
+
+- `platform/motors/update`: Update each motor controller with a binary file.
+  - Type: `clearpath_motor_msgs/action/LynxUpdate`
+
+  - Usage:
+`ros2 action send_goal /platform/motors/update clearpath_motor_msgs/action/LynxUpdate "file: ''" --feedback`
+
+:warning:
+Only use Clearpath verified binary files. Attempting to flash custom files can render the Lynx motor controller non-functional. Leave the file field empty to use the default binary.
